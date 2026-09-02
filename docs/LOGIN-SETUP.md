@@ -94,3 +94,23 @@ AUTH_CALLBACK_URL=https://내-도메인/auth/github/callback
 - 세션 쿠키는 `HttpOnly`, `SameSite=Lax` 이고 프로덕션에서는 `Secure` 가 붙습니다.
 - OAuth `state` 를 만들어 콜백에서 대조합니다. 남이 유도한 로그인으로 세션이 굳는 것을
   막습니다.
+
+## Vercel 배포
+
+1. **환경변수** — Settings → Environment Variables 에 세 개를 넣는다.
+   `MONGODB_URI` · `GITHUB_CLIENT_ID` · `GITHUB_CLIENT_SECRET`.
+   `MONGODB_URI` 는 필수다. 없으면 로그인 마지막 단계(사용자 저장)에서 터지는데,
+   화면에는 "GitHub 로그인에 실패했습니다" 로 보여 원인을 오해하기 쉽다.
+   저장만으로는 반영되지 않는다. **재배포해야 한다.**
+
+2. **콜백 URL** — Vercel 은 한 프로젝트에 별칭 도메인을 여러 개 준다
+   (`<프로젝트>-<해시>-<팀>.vercel.app`, `<프로젝트>-<단어>.vercel.app` 등).
+   앱은 **요청이 도착한 호스트**로 `redirect_uri` 를 만들기 때문에, 접속한 도메인이
+   OAuth App 에 등록돼 있지 않으면 GitHub 가 `redirect_uri is not associated` 로 막는다.
+   OAuth App 하나에 Redirect URI 를 **10개까지** 등록할 수 있으니 쓰는 도메인을 모두 넣는다.
+   `AUTH_CALLBACK_URL` 로 하나만 못 박아도 된다.
+
+3. **Atlas Network Access** — Vercel 은 나가는 IP 가 고정이 아니다. `0.0.0.0/0` 을 허용한다.
+
+4. **허용 명단** — 배포본은 링크만 알면 누구나 열 수 있다. 본인만 쓸 것이라면
+   `ALLOWED_GITHUB_USERS` 에 아이디를 넣는다.

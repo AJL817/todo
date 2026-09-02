@@ -112,13 +112,35 @@ export async function resolveMongoUri(): Promise<string> {
   const explicit = process.env.MONGODB_URI
   if (explicit && explicit.trim() !== '') return explicit.trim()
 
+  // 서버리스/프로덕션에는 로컬 mongod 로 물러설 곳이 없다. mongodb-memory-server 는
+  // devDependency 라 배포본에 아예 없어서, 여기서 막지 않으면 한참 뒤 DB 를 쓰는
+  // 지점에서 터진다. 실제로 Vercel 배포에서 그 예외가 "GitHub 로그인 실패" 로
+  // 둔갑해 원인을 찾는 데 오래 걸렸다.
+  if (process.env.VERCEL || process.env.NODE_ENV === 'production') {
+    throw new Error(
+      '환경변수 MONGODB_URI 가 필요합니다. 배포 환경에는 로컬 mongod 대체 경로가 없습니다 ' +
+        '(docs/LOGIN-SETUP.md 참고).',
+    )
+  }
+
   if (await isPortOpen(LOCAL_MONGO_HOST, localMongoPort())) return localUri()
 
   // 동시 호출이 각자 mongod 를 띄우려 하면 포트가 충돌한다. 한 번만 시작하도록 묶는다.
   globalForMongo.__localMongoStarting ??= startLocalMongo().catch(async (err: unknown) => {
     globalForMongo.__localMongoStarting = undefined
     // 경합에서 밀려 포트를 뺏겼다면 이미 떠 있는 인스턴스에 붙는다.
-    if (await isPortOpen(LOCAL_MONGO_HOST, localMongoPort())) return localUri()
+    // 서버리스/프로덕션에는 로컬 mongod 로 물러설 곳이 없다. mongodb-memory-server 는
+  // devDependency 라 배포본에 아예 없어서, 여기서 막지 않으면 한참 뒤 DB 를 쓰는
+  // 지점에서 터진다. 실제로 Vercel 배포에서 그 예외가 "GitHub 로그인 실패" 로
+  // 둔갑해 원인을 찾는 데 오래 걸렸다.
+  if (process.env.VERCEL || process.env.NODE_ENV === 'production') {
+    throw new Error(
+      '환경변수 MONGODB_URI 가 필요합니다. 배포 환경에는 로컬 mongod 대체 경로가 없습니다 ' +
+        '(docs/LOGIN-SETUP.md 참고).',
+    )
+  }
+
+  if (await isPortOpen(LOCAL_MONGO_HOST, localMongoPort())) return localUri()
     throw err
   })
 

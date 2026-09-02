@@ -62,6 +62,8 @@ afterAll(async () => {
 afterEach(() => {
   stubProfile = { id: 4242, login: 'octocat', avatar_url: 'https://example.test/a.png' }
   tokenRequests = 0
+  // ALLOWED_GITHUB_USERS 같은 스텁이 다음 테스트로 새면 원인 찾기 어려운 실패가 된다.
+  vi.unstubAllEnvs()
 })
 
 function req(path: string, init?: RequestInit): Request {
@@ -180,6 +182,42 @@ describe('GET /auth/github/callback — 콜백', () => {
     expect(response.headers.get('location')).toContain('/login?error=')
     expect(await Session.countDocuments({})).toBe(0)
     expect(tokenRequests).toBe(0)
+  })
+
+  it('허용 명단에 없는 계정은 사용자 문서조차 만들지 않는다', async () => {
+    vi.stubEnv('ALLOWED_GITHUB_USERS', 'someone-else')
+
+    const response = await handleCallback(
+      req('/auth/github/callback?code=test-code&state=s1', { headers: { cookie: `${OAUTH_STATE_COOKIE}=s1` } }),
+    )
+
+    expect(response.headers.get('location')).toContain('/login?error=')
+    expect(readSetCookie(response, SESSION_COOKIE)).toBeNull()
+    // 통과시킨 뒤 지우면 그 사이 데이터가 남는다. 애초에 만들지 않아야 한다.
+    expect(await User.countDocuments({})).toBe(0)
+    expect(await Session.countDocuments({})).toBe(0)
+  })
+
+  it('허용 명단에 있으면 대소문자가 달라도 로그인된다', async () => {
+    vi.stubEnv('ALLOWED_GITHUB_USERS', ' OctoCat , someone-else ')
+
+    const response = await handleCallback(
+      req('/auth/github/callback?code=test-code&state=s1', { headers: { cookie: `${OAUTH_STATE_COOKIE}=s1` } }),
+    )
+
+    expect(response.headers.get('location')).toBe(`${ORIGIN}/`)
+    expect(await User.countDocuments({ githubId: 4242 })).toBe(1)
+  })
+
+  it('명단을 비워 두면 아무도 막지 않는다', async () => {
+    vi.stubEnv('ALLOWED_GITHUB_USERS', '')
+
+    const response = await handleCallback(
+      req('/auth/github/callback?code=test-code&state=s1', { headers: { cookie: `${OAUTH_STATE_COOKIE}=s1` } }),
+    )
+
+    expect(response.headers.get('location')).toBe(`${ORIGIN}/`)
+    expect(await User.countDocuments({})).toBe(1)
   })
 
   it('같은 GitHub 계정으로 두 번 로그인해도 사용자는 1명이다', async () => {

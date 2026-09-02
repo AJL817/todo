@@ -38,3 +38,6 @@ Thumbs.db
 
 # mongodb-memory-server 바이너리 캐시
 .cache/
+
+.vercel
+.env*

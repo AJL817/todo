@@ -3,6 +3,7 @@ import { clearStateCookie, readCookie, setSessionCookie } from '@/lib/auth/cooki
 import { appOrigin, callbackUrl, exchangeCodeForToken, fetchGithubProfile } from '@/lib/auth/github'
 import { OAUTH_STATE_COOKIE } from '@/lib/auth/constants'
 import { createSession, upsertGithubUser } from '@/lib/auth/session'
+import { isAllowedUser } from '@/lib/auth/allowlist'
 
 function failure(request: Request, message: string) {
   const response = NextResponse.redirect(new URL(`/login?error=${encodeURIComponent(message)}`, appOrigin(request)))
@@ -14,7 +15,7 @@ function failure(request: Request, message: string) {
  * GitHub 가 돌려보내는 지점. 순서가 중요하다.
  *  1. state 대조 (여기서 막지 못하면 남이 시작한 로그인을 내 세션으로 굳힐 수 있다)
  *  2. code -> 액세스 토큰
- *  3. 프로필 조회 후 사용자 저장
+ *  3. 프로필 조회 -> 허용 명단 확인 -> 사용자 저장
  *  4. 세션 발급
  */
 export async function GET(request: Request) {
@@ -35,6 +36,13 @@ export async function GET(request: Request) {
   try {
     const accessToken = await exchangeCodeForToken(code, callbackUrl(request))
     const profile = await fetchGithubProfile(accessToken)
+
+    // 사용자 문서를 만들기 전에 막는다. 통과시킨 뒤 지우면 그 사이에 만들어진
+    // 데이터가 남는다.
+    if (!isAllowedUser(profile.username)) {
+      return failure(request, '이 앱을 사용할 수 있는 계정이 아닙니다.')
+    }
+
     const user = await upsertGithubUser(profile)
     const { token, expiresAt } = await createSession(user._id.toString())
 

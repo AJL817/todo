@@ -118,6 +118,15 @@ Todo.find({ deletedAt: null, status: 'doing' })
 
 예외는 `lib/retention.ts` 의 보관 정리 하나다. 전역 유지보수라 소유자와 무관하다.
 
+### 누가 로그인할 수 있나
+
+`ALLOWED_GITHUB_USERS` (쉼표 구분, 대소문자 무시)에 적힌 아이디만 로그인된다.
+검사는 콜백에서 **사용자 문서를 만들기 전에** 한다. 통과시킨 뒤 지우면 그 사이에
+만들어진 데이터가 남기 때문이다.
+
+비워 두면 제한이 없다. "명단 없음" 을 "전원 차단" 으로 해석하면 설정을 깜빡한
+순간 본인조차 못 들어오므로, 기본값은 열어 두고 배포에서 채우는 쪽을 택했다.
+
 ### 라우트
 
 보호된 API 는 첫 줄에서 `requireUser(request)` 를 부르고, 그 `user.id` 를 리포지토리에
@@ -126,6 +135,15 @@ Todo.find({ deletedAt: null, status: 'doing' })
 
 `middleware.ts` 는 화면 접근을 로그인으로 안내할 뿐 **보안 경계가 아니다.** Edge 런타임이라
 MongoDB 를 조회할 수 없어 쿠키 유무만 본다. 실제 검증은 언제나 라우트 핸들러가 한다.
+
+### 배포에는 로컬 mongod 대체 경로가 없다
+
+`MONGODB_URI` 가 없으면 로컬에서는 `mongodb-memory-server` 로 물러서지만, 이건
+devDependency 라 배포본에 아예 없다. 그래서 `VERCEL` 이거나 `NODE_ENV=production`
+이면 `resolveMongoUri()` 가 그 자리에서 명확한 예외를 던진다.
+
+가드를 넣은 이유: 실제로 Vercel 배포에서 이 예외가 콜백의 `catch` 에 걸려
+**"GitHub 로그인에 실패했습니다"** 로 둔갑했고, GitHub 설정을 한참 뒤졌다.
 
 ### Edge 런타임 주의
 
