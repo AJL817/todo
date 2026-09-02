@@ -1,5 +1,8 @@
 import { expect, type Locator, type Page } from '@playwright/test'
 
+/** locator.boundingBox() 의 반환형. 화면 밖이면 null 이다 */
+type Box = { x: number; y: number; width: number; height: number } | null
+
 export const STUB_URL = process.env.GITHUB_STUB_URL ?? 'http://127.0.0.1:3199'
 
 /**
@@ -180,10 +183,44 @@ export async function dragCard(page: Page, title: string, target: Locator): Prom
   ])
   if (!handleBox || !cardBox || !targetBox) throw new Error('드래그 대상의 위치를 찾지 못했습니다')
 
-  const start = { x: handleBox.x + handleBox.width / 2, y: handleBox.y + handleBox.height / 2 }
-  const deltaX = targetBox.x + targetBox.width / 2 - (cardBox.x + cardBox.width / 2)
-  const deltaY = targetBox.y + targetBox.height / 2 - (cardBox.y + cardBox.height / 2)
-  const end = { x: start.x + deltaX, y: start.y + deltaY }
+  const point = (handle: Box, body: Box, target: Box) => {
+    if (!handle || !body || !target) throw new Error('드래그 대상의 위치를 찾지 못했습니다')
+    const from = { x: handle.x + handle.width / 2, y: handle.y + handle.height / 2 }
+    return {
+      start: from,
+      end: {
+        x: from.x + (target.x + target.width / 2 - (body.x + body.width / 2)),
+        y: from.y + (target.y + target.height / 2 - (body.y + body.height / 2)),
+      },
+    }
+  }
+
+  let { start, end } = point(handleBox, cardBox, targetBox)
+
+  // 출발점만 화면 가운데로 올려서는 부족하다. 카드가 커지거나 섹션 여백이 넓어지면
+  // 목적지가 뷰포트 밖으로 밀려나고, 그러면 포인터가 화면 밖을 겨냥해 드롭이 통째로
+  // 무시된다. 60초 타임아웃으로 나타나서 원인을 알아보기 어렵다.
+  const viewport = page.viewportSize()
+  if (viewport) {
+    const overflow =
+      end.y < 0 ? end.y - 8 : end.y > viewport.height ? end.y - viewport.height + 8 : 0
+
+    if (overflow !== 0) {
+      await page.evaluate((dy) => window.scrollBy(0, dy), overflow)
+      const [h2, c2, t2] = await Promise.all([
+        source.boundingBox(),
+        body.boundingBox(),
+        target.boundingBox(),
+      ])
+      ;({ start, end } = point(h2, c2, t2))
+    }
+
+    for (const [name, p] of [['출발점', start], ['목적지', end]] as const) {
+      if (p.y < 0 || p.y > viewport.height) {
+        throw new Error(`${name}이 뷰포트 밖입니다 (y=${Math.round(p.y)}). 스크롤해도 보이지 않습니다.`)
+      }
+    }
+  }
 
   await page.mouse.move(start.x, start.y)
   await page.mouse.down()

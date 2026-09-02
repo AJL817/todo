@@ -36,8 +36,8 @@ export default function RootLayout({ children }: { children: ReactNode }) {
           {/* 좁은 화면에서는 가로 스크롤 메뉴, md 이상에서는 왼쪽 사이드바 */}
           <div className="flex min-h-screen flex-col md:flex-row">
             <Sidebar />
-            <main className="min-w-0 flex-1 px-4 py-6 md:px-8 md:py-10">
-              <div className="mx-auto max-w-5xl">{children}</div>
+            <main className="min-w-0 flex-1 px-5 py-8 md:px-10 md:py-14">
+              <div className="mx-auto max-w-7xl">{children}</div>
             </main>
           </div>
         </Providers>

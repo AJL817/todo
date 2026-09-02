@@ -56,10 +56,10 @@ export default function GoalsPage() {
   }
 
   return (
-    <div className="flex flex-col gap-8">
+    <div className="flex flex-col gap-16">
       <header className="flex flex-col gap-1.5">
-        <h1 className="text-2xl font-semibold tracking-tight text-ink">1년 목표</h1>
-        <p className="text-sm leading-relaxed text-muted">
+        <h1 className="t-display text-ink">1년 목표</h1>
+        <p className="t-body text-muted">
           진행률은 <strong>경과한 주</strong>만 세어 평균 냅니다. 미래 주를 미리 만들어 둬도 오늘의 성과가 깎이지 않습니다.
         </p>
       </header>
@@ -104,15 +104,15 @@ export default function GoalsPage() {
       </form>
 
       {goalsQuery.isPending ? (
-        <p data-testid="goals-loading" className="text-sm text-muted">
+        <p data-testid="goals-loading" className="t-body text-muted">
           불러오는 중…
         </p>
       ) : goals.length === 0 ? (
-        <p data-testid="goals-empty" className="text-sm text-muted">
+        <p data-testid="goals-empty" className="t-body text-muted">
           아직 1년 목표가 없습니다.
         </p>
       ) : (
-        <div className="grid gap-3 md:grid-cols-2 lg:grid-cols-3" data-testid="goal-list">
+        <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3" data-testid="goal-list">
           {goals.map((entry) => (
             <GoalCard
               key={entry.goal.id}
@@ -126,10 +126,10 @@ export default function GoalsPage() {
 
       <section
         data-testid="orphan-plans"
-        className="card flex flex-col gap-4 p-5"
+        className="card flex flex-col gap-4 p-6"
       >
         <header className="flex items-baseline gap-2">
-          <h2 className="text-[15px] font-semibold text-ink">미분류 주간 계획</h2>
+          <h2 className="t-section text-ink">미분류 주간 계획</h2>
           <span data-testid="orphan-plan-count" className="text-xs text-muted">
             {orphanPlans.length}건
           </span>

@@ -44,13 +44,13 @@ export function Sidebar() {
     <nav
       data-testid="sidebar"
       aria-label="주요 메뉴"
-      className="sticky top-0 z-20 flex shrink-0 gap-1 overflow-x-auto border-b border-hairline bg-canvas px-3 py-2.5 md:h-screen md:w-60 md:flex-col md:gap-0.5 md:overflow-y-auto md:border-b-0 md:border-r md:px-3 md:py-5"
+      className="sticky top-0 z-20 flex shrink-0 gap-1 overflow-x-auto border-b border-hairline bg-canvas px-3 py-2.5 md:h-screen md:w-64 md:flex-col md:gap-0.5 md:overflow-y-auto md:border-b-0 md:border-r md:px-3 md:py-5"
     >
       <div className="hidden px-3 pb-6 md:block">
-        <Link href="/" className="text-[15px] font-semibold leading-tight text-ink">
+        <Link href="/" className="t-title text-ink">
           목표 연동 칸반
         </Link>
-        <p className="mt-1 text-xs text-muted">1년 목표 · 주간 계획 · 할일</p>
+        <p className="mt-1.5 text-[13px] text-muted">1년 목표 · 주간 계획 · 할일</p>
       </div>
 
       {ITEMS.map((item) => {
@@ -62,7 +62,7 @@ export function Sidebar() {
             href={item.href}
             data-testid={item.testId}
             aria-current={active ? 'page' : undefined}
-            className={`flex shrink-0 items-center justify-between gap-2 whitespace-nowrap rounded-control px-3 py-2 text-sm transition-colors ${
+            className={`flex shrink-0 items-center justify-between gap-2 whitespace-nowrap rounded-control px-3.5 py-2.5 text-[15px] transition-colors ${
               active
                 ? 'bg-primary-soft font-semibold text-primary-accent'
                 : 'text-body hover:bg-surface-soft hover:text-ink'
@@ -96,7 +96,7 @@ export function Sidebar() {
               data-testid="current-user-avatar"
               className="size-7 rounded-full bg-surface-strong"
             />
-            <span data-testid="current-user-name" className="truncate text-sm font-medium text-ink">
+            <span data-testid="current-user-name" className="truncate text-[15px] font-medium text-ink">
               {me.data.user.username}
             </span>
           </div>

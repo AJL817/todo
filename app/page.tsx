@@ -33,10 +33,10 @@ function Panel({
   return (
     <section
       data-testid={testId}
-      className="card flex flex-col gap-4 p-5"
+      className="card flex flex-col gap-4 p-6"
     >
       <header className="flex flex-wrap items-baseline justify-between gap-2">
-        <h2 className="text-[15px] font-semibold text-ink">{title}</h2>
+        <h2 className="t-section text-ink">{title}</h2>
         {action}
       </header>
       {children}
@@ -86,10 +86,10 @@ export default function DashboardPage() {
     plans.find((plan) => plan.id === todo.weeklyPlanId)?.title ?? '미분류'
 
   return (
-    <div className="flex flex-col gap-8">
+    <div className="flex flex-col gap-16">
       <header className="flex flex-col gap-1.5">
-        <h1 className="text-2xl font-semibold tracking-tight text-ink">대시보드</h1>
-        <p className="text-sm leading-relaxed text-muted">
+        <h1 className="t-display text-ink">대시보드</h1>
+        <p className="t-body text-muted">
           {today} · 오늘 처리할 일과 그것이 이번 주와 올해 목표에 얼마나 기여하는지 함께 봅니다.
         </p>
       </header>
@@ -104,9 +104,9 @@ export default function DashboardPage() {
         }
       >
         {dayQuery.isPending ? (
-          <p className="text-sm text-muted">불러오는 중…</p>
+          <p className="t-body text-muted">불러오는 중…</p>
         ) : dayTodos.length === 0 ? (
-          <p data-testid="today-empty" className="text-sm text-muted">
+          <p data-testid="today-empty" className="t-body text-muted">
             오늘 처리할 항목이 없습니다. <Link href="/todos" className="underline">할일</Link> 에서 추가하세요.
           </p>
         ) : (
@@ -164,7 +164,7 @@ export default function DashboardPage() {
           }
         >
           {plans.length === 0 ? (
-            <p data-testid="week-empty" className="text-sm text-muted">
+            <p data-testid="week-empty" className="t-body text-muted">
               이번 주 계획이 없습니다.
             </p>
           ) : (
@@ -201,7 +201,7 @@ export default function DashboardPage() {
           }
         >
           {goals.length === 0 ? (
-            <p data-testid="goals-empty-dash" className="text-sm text-muted">
+            <p data-testid="goals-empty-dash" className="t-body text-muted">
               아직 1년 목표가 없습니다.
             </p>
           ) : (
@@ -246,7 +246,7 @@ export default function DashboardPage() {
 
         <Panel testId="dashboard-metrics" title="성공 지표">
           {!metrics ? (
-            <p className="text-sm text-muted">불러오는 중…</p>
+            <p className="t-body text-muted">불러오는 중…</p>
           ) : (
             <ul className="flex flex-col gap-1.5 text-sm">
               {(

@@ -27,10 +27,10 @@ export function WeeklyPlanCard({
     <article
       data-testid={`plan-${plan.id}`}
       data-title={plan.title}
-      className="card flex flex-col gap-4 p-5"
+      className="card flex flex-col gap-4 p-6"
     >
       <header className="flex items-start justify-between gap-2">
-        <h3 className="text-[15px] font-semibold leading-snug text-ink">{plan.title}</h3>
+        <h3 className="t-title text-ink">{plan.title}</h3>
         <div className="flex gap-1">
           {onCarryOver && (
             <button

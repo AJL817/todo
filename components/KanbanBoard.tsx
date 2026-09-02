@@ -52,7 +52,7 @@ function Column({
       }`}
     >
       <header className="flex items-center justify-between px-1 pb-1">
-        <h2 className="text-[15px] font-semibold text-ink">{STATUS_LABELS[status]}</h2>
+        <h2 className="t-section text-ink">{STATUS_LABELS[status]}</h2>
         <span className="text-xs tabular-nums text-muted" data-testid={`count-${status}`}>
           {todos.length}
         </span>

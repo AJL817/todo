@@ -53,17 +53,17 @@ export default function WeekPage({ params }: { params: Promise<{ weekStart: stri
   const carryOverPlan = plans.find((plan) => plan.id === carryOverPlanId) ?? null
 
   return (
-    <div className="flex flex-col gap-8">
+    <div className="flex flex-col gap-16">
       <header className="flex flex-col gap-3">
-        <h1 className="text-2xl font-semibold tracking-tight text-ink">주간 뷰</h1>
+        <h1 className="t-display text-ink">주간 뷰</h1>
         <WeekNavigator weekStart={weekStart} />
-        <p className="text-sm leading-relaxed text-muted">
+        <p className="t-body text-muted">
           이 주 계획에 <strong>소속된</strong> 할일을 모읍니다. 마감일 기준이 아니므로 마감일이 없는 할일도 보입니다.
         </p>
       </header>
 
       <section className="flex flex-col gap-3">
-        <h2 className="text-[15px] font-semibold text-ink">주간 계획</h2>
+        <h2 className="t-section text-ink">주간 계획</h2>
 
         <form
           data-testid="plan-form"
@@ -94,11 +94,11 @@ export default function WeekPage({ params }: { params: Promise<{ weekStart: stri
         </form>
 
         {plans.length === 0 ? (
-          <p data-testid="plan-empty" className="text-sm text-muted">
+          <p data-testid="plan-empty" className="t-body text-muted">
             이 주에는 계획이 없습니다.
           </p>
         ) : (
-          <div className="grid gap-3 md:grid-cols-2 lg:grid-cols-3" data-testid="plan-list">
+          <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3" data-testid="plan-list">
             {plans.map((plan) => (
               <WeeklyPlanCard
                 key={plan.id}
@@ -115,7 +115,7 @@ export default function WeekPage({ params }: { params: Promise<{ weekStart: stri
       </section>
 
       <section className="flex flex-col gap-3">
-        <h2 className="text-[15px] font-semibold text-ink">이 주의 할일</h2>
+        <h2 className="t-section text-ink">이 주의 할일</h2>
 
         <TodoForm
           onCreate={(payload) => createTodo.mutate(payload)}
@@ -127,7 +127,7 @@ export default function WeekPage({ params }: { params: Promise<{ weekStart: stri
         />
 
         {weekQuery.isPending ? (
-          <p data-testid="week-loading" className="text-sm text-muted">
+          <p data-testid="week-loading" className="t-body text-muted">
             불러오는 중…
           </p>
         ) : (
@@ -143,10 +143,10 @@ export default function WeekPage({ params }: { params: Promise<{ weekStart: stri
       {carriedOut.length > 0 && (
         <section
           data-testid="carried-out-section"
-          className="card flex flex-col gap-3 p-5"
+          className="card flex flex-col gap-4 p-6"
         >
           <header className="flex items-baseline gap-2">
-            <h2 className="text-[15px] font-semibold text-ink">이 주에서 이월돼 나간 할일</h2>
+            <h2 className="t-section text-ink">이 주에서 이월돼 나간 할일</h2>
             <span data-testid="carried-out-count" className="text-xs text-muted">
               {carriedOut.length}건
             </span>

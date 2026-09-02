@@ -151,6 +151,52 @@ body {
 }
 
 /*
+ * 활자 스케일. 문서의 typography 토큰을 그대로 옮겼다.
+ *
+ * 앞선 시도에서 색만 토큰화하고 크기는 예전(본문 14px)을 그대로 뒀더니
+ * 화면이 바뀐 티가 나지 않았다. 이 시스템에서 "generous" 를 만드는 것은
+ * 색이 아니라 본문 16px 과 섹션 사이 64px 이다.
+ */
+@layer components {
+  /* display-xl — 페이지 제목 */
+  .t-display {
+    font-size: 1.75rem;
+    font-weight: 700;
+    line-height: 1.25;
+    letter-spacing: -0.01em;
+  }
+
+  /* display-sm — 섹션 제목 */
+  .t-section {
+    font-size: 1.25rem;
+    font-weight: 600;
+    line-height: 1.2;
+    letter-spacing: -0.18px;
+  }
+
+  /* title-md — 카드 제목 */
+  .t-title {
+    font-size: 1rem;
+    font-weight: 600;
+    line-height: 1.25;
+  }
+
+  /* body-md — 기본 running text */
+  .t-body {
+    font-size: 1rem;
+    font-weight: 400;
+    line-height: 1.5;
+  }
+
+  /* body-sm — 카드 메타, 날짜, 건수 */
+  .t-meta {
+    font-size: 0.875rem;
+    font-weight: 400;
+    line-height: 1.43;
+  }
+}
+
+/*
  * 프리미티브.
  *
  * 버튼과 입력을 페이지마다 다시 조합하면 반경과 높이가 조금씩 어긋난다.
@@ -162,11 +208,11 @@ body {
     align-items: center;
     justify-content: center;
     gap: 0.5rem;
-    /* 터치 목표 44px 이상 */
-    min-height: 2.75rem;
-    padding: 0 1.25rem;
+    /* 문서의 button-primary: 48px 높이, 24px 좌우 패딩, 16px 라벨 */
+    min-height: 3rem;
+    padding: 0 1.5rem;
     border-radius: var(--radius-control);
-    font-size: 0.9375rem;
+    font-size: 1rem;
     font-weight: 500;
     line-height: 1.25;
     white-space: nowrap;
@@ -223,14 +269,15 @@ body {
 
   .field {
     width: 100%;
-    min-height: 2.75rem;
-    padding: 0.625rem 0.75rem;
+    /* 문서의 text-input: 56px 높이, 14x12 패딩, 본문 16px */
+    min-height: 3.5rem;
+    padding: 0.875rem 0.875rem;
     border-radius: var(--radius-control);
     border: 1px solid var(--hairline);
     background: var(--surface);
     color: var(--ink);
-    font-size: 0.9375rem;
-    line-height: 1.4;
+    font-size: 1rem;
+    line-height: 1.5;
   }
 
   .field::placeholder {

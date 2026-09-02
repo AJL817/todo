@@ -68,11 +68,11 @@ export function CarryOverDialog({
         </header>
 
         {loading ? (
-          <p data-testid="carryover-loading" className="text-sm text-muted">
+          <p data-testid="carryover-loading" className="t-body text-muted">
             대상을 불러오는 중…
           </p>
         ) : todos.length === 0 ? (
-          <p data-testid="carryover-empty" className="text-sm text-muted">
+          <p data-testid="carryover-empty" className="t-body text-muted">
             이월할 미완료 할일이 없습니다.
           </p>
         ) : (

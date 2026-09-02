@@ -77,9 +77,9 @@ export function InboxSection({ todos, plans, onAssign, heading = '미분류' }: 
   }
 
   return (
-    <section data-testid="inbox-section" className="card flex flex-col gap-4 p-5">
+    <section data-testid="inbox-section" className="card flex flex-col gap-4 p-6">
       <header className="flex items-baseline gap-2">
-        <h2 className="text-[15px] font-semibold text-ink">{heading}</h2>
+        <h2 className="t-section text-ink">{heading}</h2>
         <span data-testid="inbox-count" className="text-xs text-muted">
           {todos.length}건
         </span>

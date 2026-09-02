@@ -82,7 +82,7 @@ export function TodoCard({ todo, onRename, onDelete, onQuickMove }: TodoCardProp
             type="button"
             onClick={() => setEditing(true)}
             data-testid={`title-${todo.id}`}
-            className="flex-1 text-left text-sm font-medium leading-snug text-ink"
+            className="flex-1 text-left text-[15px] font-medium leading-snug text-ink"
           >
             {todo.title}
           </button>

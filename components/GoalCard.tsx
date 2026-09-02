@@ -23,11 +23,11 @@ export function GoalCard({ goal, progress, onDelete }: GoalCardProps) {
     <article
       data-testid={`goal-${goal.id}`}
       data-title={goal.title}
-      className="card flex flex-col gap-3 p-5"
+      className="card flex flex-col gap-4 p-6"
     >
       <header className="flex items-start justify-between gap-2">
         <div className="flex flex-col">
-          <Link href={`/goals/${goal.id}`} data-testid={`goal-link-${goal.id}`} className="text-[15px] font-semibold text-ink hover:text-primary-accent">
+          <Link href={`/goals/${goal.id}`} data-testid={`goal-link-${goal.id}`} className="t-title text-ink hover:text-primary-accent">
             {goal.title}
           </Link>
           <span className="mt-0.5 text-xs text-muted">{goal.year}년</span>

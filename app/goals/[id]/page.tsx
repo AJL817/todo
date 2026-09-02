@@ -16,7 +16,7 @@ export default function GoalDetailPage({ params }: { params: Promise<{ id: strin
 
   if (goalQuery.isPending) {
     return (
-      <p data-testid="goal-loading" className="text-sm text-muted">
+      <p data-testid="goal-loading" className="t-body text-muted">
         불러오는 중…
       </p>
     )
@@ -38,21 +38,21 @@ export default function GoalDetailPage({ params }: { params: Promise<{ id: strin
   const { goal, progress, plans } = goalQuery.data
 
   return (
-    <div className="flex flex-col gap-8">
+    <div className="flex flex-col gap-16">
       <header className="flex flex-col gap-2">
         <Link href="/goals" data-testid="goal-back" className="text-xs text-muted underline hover:text-ink">
           ← 1년 목표 목록
         </Link>
-        <h1 data-testid="goal-detail-title" className="text-2xl font-semibold tracking-tight text-ink">
+        <h1 data-testid="goal-detail-title" className="t-display text-ink">
           {goal.title}
         </h1>
-        <p className="text-sm leading-relaxed text-muted">
+        <p className="t-body text-muted">
           {goal.year}년 · {formatKstDate(goal.startDate)} ~ {formatKstDate(goal.endDate)}
         </p>
-        {goal.description && <p className="text-sm leading-relaxed text-muted">{goal.description}</p>}
+        {goal.description && <p className="t-body text-muted">{goal.description}</p>}
       </header>
 
-      <section className="card flex flex-col gap-3 p-5">
+      <section className="card flex flex-col gap-4 p-6">
         <ProgressBar percent={progress.percent} testId="goal-detail-bar" />
         <p data-testid="goal-detail-progress" className="text-sm font-semibold text-ink">
           {goalProgressText(progress)}
@@ -63,10 +63,10 @@ export default function GoalDetailPage({ params }: { params: Promise<{ id: strin
       </section>
 
       <section className="flex flex-col gap-3">
-        <h2 className="text-[15px] font-semibold text-ink">하위 주간 계획</h2>
+        <h2 className="t-section text-ink">하위 주간 계획</h2>
 
         {plans.length === 0 ? (
-          <p data-testid="goal-plans-empty" className="text-sm text-muted">
+          <p data-testid="goal-plans-empty" className="t-body text-muted">
             연결된 주간 계획이 없습니다.
           </p>
         ) : (
@@ -76,7 +76,7 @@ export default function GoalDetailPage({ params }: { params: Promise<{ id: strin
                 key={entry.plan.id}
                 data-testid={`goal-plan-${entry.plan.id}`}
                 data-title={entry.plan.title}
-                className="card flex flex-col gap-2.5 p-4"
+                className="card flex flex-col gap-3 p-5"
               >
                 <div className="flex flex-wrap items-baseline justify-between gap-2">
                   <Link href={`/week/${formatKstDate(entry.plan.weekStart)}`} className="text-sm font-medium text-ink hover:text-primary-accent">
