@@ -1,0 +1,41 @@
+# GitHub OAuth 로그인 (docs/LOGIN.md) — 완료
+
+모든 완료 조건을 구현하고 검증했다. 요구사항 ↔ 테스트 대응은 docs/VERIFICATION.md 참고.
+
+## 완료 조건 대응
+
+| docs/LOGIN.md 조건 | 결과 |
+|---|---|
+| OAuth App 설정 가이드 / .env.example | `.env.example`, `docs/LOGIN-SETUP.md` |
+| /auth/github, /auth/github/callback 동작 | `app/auth/github/route.ts`, `app/auth/github/callback/route.ts` |
+| username, avatar_url DB 저장 | `models/User.ts` + `upsertGithubUser()` |
+| 미로그인 접근 불가 (401 / 리다이렉트) | API 전부 `requireUser()` → 401, 화면은 `middleware.ts` 가 `/login` 으로 |
+| 본인 할일만 조회/수정/삭제 | `activeFilter(ownerId, ...)` 가 소유자를 필수 인자로 강제 |
+| 로그아웃 시 세션 완전 삭제 | 서버 세션 삭제 + 쿠키 만료. stateless JWT 를 쓰지 않은 이유가 이것 |
+| user_id 컬럼 추가 및 마이그레이션 | 3개 모델에 `userId` + `npm run migrate:user -- <username>` |
+
+## 금지 사항 준수
+
+- 기존 할 일 CRUD 로직 변경 금지 → 리포지토리 함수의 **본문 규칙은 그대로**이고
+  소유자 인자와 필터만 더했다. 상태 전이·순서·이월 규칙은 손대지 않았다
+- 하드 코딩된 CLIENT_SECRET 금지 → `requiredEnv()` 로만 읽고 기본값이 없다.
+  없으면 기동 시 예외. `.env.local` 은 gitignore 대상
+- 미완성 상태로 "완료" 보고 금지 → 아래 게이트가 전부 통과한 뒤에만 완료로 적었다
+
+## 검증 게이트
+
+tsc 0 · eslint 0 · vitest 344 · playwright 72 · build 0
+
+## 재개할 때 알아 둘 것
+
+- `npm run build` 는 dev 서버를 끄고 돌릴 것. 같이 돌리면 `.next` 가 섞여 `/` 가 500 이 난다
+- E2E 는 실제 GitHub 에 붙지 않는다. `scripts/github-oauth-stub.mjs` 를 Playwright 가
+  webServer 로 함께 띄운다 (3199). 앱 안에 테스트 전용 라우트는 없다
+- 로컬 실행 전 `.env.local` 에 `GITHUB_CLIENT_ID` / `GITHUB_CLIENT_SECRET` 필요.
+  절차는 docs/LOGIN-SETUP.md
+- 로그인 도입 전 데이터가 남아 있다면 `npm run migrate:user -- <username>` 을 한 번 돌릴 것.
+  안 돌리면 기존 할일이 화면에서 사라진 것처럼 보인다 (소유자가 없어 필터에 걸린다)
+
+## 남은 것
+
+`docs/BACKLOG.md` 의 "로그인 이후 남은 것" 절. 전부 요구사항 밖이다.

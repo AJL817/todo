@@ -1,0 +1,40 @@
+# OMC 세션 상태 - 세션마다 바뀌는 임시 파일이라 커밋하지 않는다
+# .omc/project-memory.json 은 프로젝트 결정사항이므로 커밋 대상에 포함
+.omc/state/
+
+# 환경 변수 (MONGODB_URI, GITHUB_CLIENT_SECRET 등)
+# .env 변종(.env.bak, .env.production …)이 하나라도 새면 시크릿이 공개된다.
+# 그래서 전부 막고 예시 파일만 되살린다.
+.env*
+!.env.example
+
+# Node
+node_modules/
+npm-debug.log*
+yarn-error.log*
+
+# Next.js
+.next/
+out/
+next-env.d.ts
+
+# 테스트 산출물
+coverage/
+test-results/
+playwright-report/
+blob-report/
+.playwright/
+
+# 로컬 실행 산출물
+*.log
+tsconfig.tsbuildinfo
+
+# OS
+Thumbs.db
+.DS_Store
+
+# 로컬 MongoDB 데이터 (mongodb-memory-server 영속 dbPath)
+.mongo-data/
+
+# mongodb-memory-server 바이너리 캐시
+.cache/

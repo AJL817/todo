@@ -1,0 +1,536 @@
+{
+  "version": "1.0.0",
+  "lastScanned": 1788330813262,
+  "projectRoot": "C:\\Users\\Andrew Lee\\desktop\\todo",
+  "techStack": {
+    "languages": [
+      {
+        "name": "JavaScript/TypeScript",
+        "version": null,
+        "confidence": "high",
+        "markers": [
+          "package.json"
+        ]
+      },
+      {
+        "name": "TypeScript",
+        "version": null,
+        "confidence": "high",
+        "markers": [
+          "tsconfig.json"
+        ]
+      }
+    ],
+    "frameworks": [
+      {
+        "name": "next",
+        "version": "15.5.0",
+        "category": "fullstack"
+      },
+      {
+        "name": "react",
+        "version": "19.0.0",
+        "category": "frontend"
+      },
+      {
+        "name": "react-dom",
+        "version": "19.0.0",
+        "category": "frontend"
+      },
+      {
+        "name": "@playwright/test",
+        "version": "1.49.1",
+        "category": "testing"
+      },
+      {
+        "name": "vitest",
+        "version": "2.1.8",
+        "category": "testing"
+      }
+    ],
+    "packageManager": "npm",
+    "runtime": null
+  },
+  "build": {
+    "buildCommand": "npm run build",
+    "testCommand": "npm test",
+    "lintCommand": "npm run lint",
+    "devCommand": "npm run dev",
+    "scripts": {
+      "dev": "next dev",
+      "build": "next build",
+      "start": "next start",
+      "lint": "eslint .",
+      "typecheck": "tsc --noEmit",
+      "test": "vitest run",
+      "test:watch": "vitest",
+      "e2e": "playwright test",
+      "purge": "tsx scripts/purge.ts",
+      "metrics": "tsx scripts/metrics.ts"
+    }
+  },
+  "conventions": {
+    "namingStyle": "camelCase",
+    "importStyle": "ES modules",
+    "testPattern": "*.test.ts",
+    "fileOrganization": null
+  },
+  "structure": {
+    "isMonorepo": false,
+    "workspaces": [],
+    "mainDirectories": [
+      "app",
+      "components",
+      "docs",
+      "lib",
+      "scripts",
+      "tests"
+    ],
+    "gitBranches": null
+  },
+  "customNotes": [],
+  "directoryMap": {
+    "app": {
+      "path": "app",
+      "purpose": "Application code",
+      "fileCount": 4,
+      "lastAccessed": 1788330813131,
+      "keyFiles": [
+        "globals.css",
+        "layout.tsx",
+        "page.tsx",
+        "providers.tsx"
+      ]
+    },
+    "components": {
+      "path": "components",
+      "purpose": "UI components",
+      "fileCount": 11,
+      "lastAccessed": 1788330813131,
+      "keyFiles": [
+        "CarryOverDialog.tsx",
+        "GoalCard.tsx",
+        "InboxSection.tsx",
+        "KanbanBoard.tsx",
+        "Nav.tsx"
+      ]
+    },
+    "docs": {
+      "path": "docs",
+      "purpose": "Documentation",
+      "fileCount": 7,
+      "lastAccessed": 1788330813139,
+      "keyFiles": [
+        "BACKLOG.md",
+        "CLAUDE.md",
+        "LOGIN.md",
+        "PLAN.md",
+        "PRD.md"
+      ]
+    },
+    "e2e": {
+      "path": "e2e",
+      "purpose": null,
+      "fileCount": 7,
+      "lastAccessed": 1788330813140,
+      "keyFiles": [
+        "board.spec.ts",
+        "carryover.spec.ts",
+        "goals.spec.ts",
+        "helpers.ts",
+        "journey.spec.ts"
+      ]
+    },
+    "hooks": {
+      "path": "hooks",
+      "purpose": null,
+      "fileCount": 4,
+      "lastAccessed": 1788330813141,
+      "keyFiles": [
+        "useCarryOver.ts",
+        "useGoalMutations.ts",
+        "usePlanMutations.ts",
+        "useTodoMutations.ts"
+      ]
+    },
+    "lib": {
+      "path": "lib",
+      "purpose": "Library code",
+      "fileCount": 14,
+      "lastAccessed": 1788330813143,
+      "keyFiles": [
+        "api.ts",
+        "carryover.ts",
+        "date.ts",
+        "db.ts",
+        "dto.ts"
+      ]
+    },
+    "models": {
+      "path": "models",
+      "purpose": "Data models",
+      "fileCount": 5,
+      "lastAccessed": 1788330813143,
+      "keyFiles": [
+        "Goal.ts",
+        "index.ts",
+        "Todo.ts",
+        "types.ts",
+        "WeeklyPlan.ts"
+      ]
+    },
+    "scripts": {
+      "path": "scripts",
+      "purpose": "Build/utility scripts",
+      "fileCount": 2,
+      "lastAccessed": 1788330813144,
+      "keyFiles": [
+        "metrics.ts",
+        "purge.ts"
+      ]
+    },
+    "test-results": {
+      "path": "test-results",
+      "purpose": null,
+      "fileCount": 1,
+      "lastAccessed": 1788330813145,
+      "keyFiles": []
+    },
+    "tests": {
+      "path": "tests",
+      "purpose": "Test files",
+      "fileCount": 17,
+      "lastAccessed": 1788330813146,
+      "keyFiles": [
+        "api-plans-goals.test.ts",
+        "api-todos.test.ts",
+        "carryover.test.ts",
+        "client-optimistic.test.ts",
+        "date.test.ts"
+      ]
+    },
+    "app\\api": {
+      "path": "app\\api",
+      "purpose": "API routes",
+      "fileCount": 0,
+      "lastAccessed": 1788330813147,
+      "keyFiles": []
+    },
+    "tests\\helpers": {
+      "path": "tests\\helpers",
+      "purpose": "Helper functions",
+      "fileCount": 3,
+      "lastAccessed": 1788330813171,
+      "keyFiles": [
+        "api.ts",
+        "db.ts",
+        "factories.ts"
+      ]
+    }
+  },
+  "hotPaths": [
+    {
+      "path": "lib/repositories/goalRepo.ts",
+      "accessCount": 2,
+      "lastAccessed": 1788230851084,
+      "type": "file"
+    },
+    {
+      "path": "components/TodoForm.tsx",
+      "accessCount": 2,
+      "lastAccessed": 1788331159823,
+      "type": "file"
+    },
+    {
+      "path": "lib/repositories/todoRepo.ts",
+      "accessCount": 2,
+      "lastAccessed": 1788334705231,
+      "type": "file"
+    },
+    {
+      "path": "lib/repositories/weeklyPlanRepo.ts",
+      "accessCount": 2,
+      "lastAccessed": 1788334812319,
+      "type": "file"
+    },
+    {
+      "path": "tests/helpers/factories.ts",
+      "accessCount": 2,
+      "lastAccessed": 1788335581639,
+      "type": "file"
+    },
+    {
+      "path": "docs/BACKLOG.md",
+      "accessCount": 2,
+      "lastAccessed": 1788348158901,
+      "type": "file"
+    },
+    {
+      "path": "docs/PLAN.md",
+      "accessCount": 1,
+      "lastAccessed": 1788229352833,
+      "type": "file"
+    },
+    {
+      "path": "tests/date.test.ts",
+      "accessCount": 1,
+      "lastAccessed": 1788230445625,
+      "type": "file"
+    },
+    {
+      "path": "tests/position.test.ts",
+      "accessCount": 1,
+      "lastAccessed": 1788230465363,
+      "type": "file"
+    },
+    {
+      "path": "tests/progress.test.ts",
+      "accessCount": 1,
+      "lastAccessed": 1788230522953,
+      "type": "file"
+    },
+    {
+      "path": "tests/views.test.ts",
+      "accessCount": 1,
+      "lastAccessed": 1788230548536,
+      "type": "file"
+    },
+    {
+      "path": "tests/carryover.test.ts",
+      "accessCount": 1,
+      "lastAccessed": 1788230577822,
+      "type": "file"
+    },
+    {
+      "path": "tests/serialize.test.ts",
+      "accessCount": 1,
+      "lastAccessed": 1788230595999,
+      "type": "file"
+    },
+    {
+      "path": "lib/repositories/shared.ts",
+      "accessCount": 1,
+      "lastAccessed": 1788230694533,
+      "type": "file"
+    },
+    {
+      "path": "tests/repo-todo.test.ts",
+      "accessCount": 1,
+      "lastAccessed": 1788230973332,
+      "type": "file"
+    },
+    {
+      "path": "tests/repo-weeklyplan.test.ts",
+      "accessCount": 1,
+      "lastAccessed": 1788231088347,
+      "type": "file"
+    },
+    {
+      "path": "tests/repo-goal.test.ts",
+      "accessCount": 1,
+      "lastAccessed": 1788231183055,
+      "type": "file"
+    },
+    {
+      "path": "lib/schemas.ts",
+      "accessCount": 1,
+      "lastAccessed": 1788231270427,
+      "type": "file"
+    },
+    {
+      "path": "lib/api.ts",
+      "accessCount": 1,
+      "lastAccessed": 1788231284995,
+      "type": "file"
+    },
+    {
+      "path": "lib/metrics.ts",
+      "accessCount": 1,
+      "lastAccessed": 1788231303974,
+      "type": "file"
+    },
+    {
+      "path": "tests/helpers/api.ts",
+      "accessCount": 1,
+      "lastAccessed": 1788231409042,
+      "type": "file"
+    },
+    {
+      "path": "tests/api-todos.test.ts",
+      "accessCount": 1,
+      "lastAccessed": 1788231459819,
+      "type": "file"
+    },
+    {
+      "path": "tests/api-plans-goals.test.ts",
+      "accessCount": 1,
+      "lastAccessed": 1788231520043,
+      "type": "file"
+    },
+    {
+      "path": "lib/dto.ts",
+      "accessCount": 1,
+      "lastAccessed": 1788231664190,
+      "type": "file"
+    },
+    {
+      "path": "components/Toast.tsx",
+      "accessCount": 1,
+      "lastAccessed": 1788231740604,
+      "type": "file"
+    },
+    {
+      "path": "hooks/useTodoMutations.ts",
+      "accessCount": 1,
+      "lastAccessed": 1788231793482,
+      "type": "file"
+    },
+    {
+      "path": "components/TodoCard.tsx",
+      "accessCount": 1,
+      "lastAccessed": 1788231822450,
+      "type": "file"
+    },
+    {
+      "path": "components/KanbanBoard.tsx",
+      "accessCount": 1,
+      "lastAccessed": 1788231844129,
+      "type": "file"
+    },
+    {
+      "path": "tests/client-optimistic.test.ts",
+      "accessCount": 1,
+      "lastAccessed": 1788231927033,
+      "type": "file"
+    },
+    {
+      "path": "e2e/helpers.ts",
+      "accessCount": 1,
+      "lastAccessed": 1788232015950,
+      "type": "file"
+    },
+    {
+      "path": "e2e/board.spec.ts",
+      "accessCount": 1,
+      "lastAccessed": 1788232054199,
+      "type": "file"
+    },
+    {
+      "path": "components/InboxSection.tsx",
+      "accessCount": 1,
+      "lastAccessed": 1788232713554,
+      "type": "file"
+    },
+    {
+      "path": "components/WeeklyPlanCard.tsx",
+      "accessCount": 1,
+      "lastAccessed": 1788232730170,
+      "type": "file"
+    },
+    {
+      "path": "hooks/usePlanMutations.ts",
+      "accessCount": 1,
+      "lastAccessed": 1788232746914,
+      "type": "file"
+    },
+    {
+      "path": "app/week/[weekStart]/page.tsx",
+      "accessCount": 1,
+      "lastAccessed": 1788232770789,
+      "type": "file"
+    },
+    {
+      "path": "e2e/week.spec.ts",
+      "accessCount": 1,
+      "lastAccessed": 1788232870434,
+      "type": "file"
+    },
+    {
+      "path": "app/goals/page.tsx",
+      "accessCount": 1,
+      "lastAccessed": 1788240440225,
+      "type": "file"
+    },
+    {
+      "path": "app/goals/[id]/page.tsx",
+      "accessCount": 1,
+      "lastAccessed": 1788240461965,
+      "type": "file"
+    },
+    {
+      "path": "e2e/goals.spec.ts",
+      "accessCount": 1,
+      "lastAccessed": 1788240509806,
+      "type": "file"
+    },
+    {
+      "path": "hooks/useCarryOver.ts",
+      "accessCount": 1,
+      "lastAccessed": 1788240875910,
+      "type": "file"
+    },
+    {
+      "path": "components/CarryOverDialog.tsx",
+      "accessCount": 1,
+      "lastAccessed": 1788240895507,
+      "type": "file"
+    },
+    {
+      "path": "e2e/carryover.spec.ts",
+      "accessCount": 1,
+      "lastAccessed": 1788240990958,
+      "type": "file"
+    },
+    {
+      "path": "lib/retention.ts",
+      "accessCount": 1,
+      "lastAccessed": 1788241305468,
+      "type": "file"
+    },
+    {
+      "path": "tests/retention.test.ts",
+      "accessCount": 1,
+      "lastAccessed": 1788241382711,
+      "type": "file"
+    },
+    {
+      "path": "e2e/journey.spec.ts",
+      "accessCount": 1,
+      "lastAccessed": 1788242407633,
+      "type": "file"
+    },
+    {
+      "path": "docs/VERIFICATION.md",
+      "accessCount": 1,
+      "lastAccessed": 1788242557615,
+      "type": "file"
+    },
+    {
+      "path": "components/Sidebar.tsx",
+      "accessCount": 1,
+      "lastAccessed": 1788331179085,
+      "type": "file"
+    },
+    {
+      "path": "app/page.tsx",
+      "accessCount": 1,
+      "lastAccessed": 1788331236975,
+      "type": "file"
+    },
+    {
+      "path": "e2e/dashboard.spec.ts",
+      "accessCount": 1,
+      "lastAccessed": 1788331610732,
+      "type": "file"
+    },
+    {
+      "path": "e2e/todo-form-link.spec.ts",
+      "accessCount": 1,
+      "lastAccessed": 1788332113499,
+      "type": "file"
+    }
+  ],
+  "userDirectives": [],
+  "notes": "진행률 산식이 이 프로젝트의 핵심 결정. 주간=done/전체*100(소프트삭제는 분자분모 즉시 제외, 0건이면 0%). 1년 목표=하위 주간 진행률의 '경과 주 기준 평균' - 집계 대상은 deletedAt null이고 (weekStart <= 이번주 월요일 OR doneCount>0)인 계획만. 이유: PRD 문구대로 전체 평균하면 52주 미리 만들고 1주차 완료시 1.9%로 왜곡되고, 반대로 할일 있는 계획만 평균하면 100%로 왜곡됨. 경과 주 기준은 연말에 PRD 원식과 정확히 수렴하므로 원식에 '미래를 벌주지 않는다' 보정만 얹은 형태. goalProgress는 {percent, countedWeeks} 반환하고 UI는 항상 '62% (경과 8주 기준)'처럼 분모 노출. 진행률은 저장하지 않고 조회 시 계산(드리프트 방지). MongoDB 트랜잭션 불필요 결론: moveTodo는 단일문서 updateOne, 소프트삭제는 하위FK null 먼저->상위 deletedAt 나중(중간 실패해도 최종 상태와 동일해 양성), 리밸런스는 멱등 bulkWrite. standalone mongod에서 전부 동작해야 하고 Phase 1 통합테스트로 강제. 미해결: 일일뷰 '오늘 기준' 정의(현재 3조건 확정안), completedAt done 이탈시 초기화 여부, 배포 범위, MongoDB 호스팅(로컬/Atlas).",
+  "directives": "docs/PLAN.md는 현재 'pending approval' 상태 - 명시적 실행 승인 전까지 소스코드 생성/수정 금지. 실행 경로는 /team 또는 /ralph 중 사용자가 선택. 계획 문서는 docs/PLAN.md 한 곳에만 유지하고 .omc/plans/에 복제하지 말 것(드리프트 방지). 상위 항목 삭제 시 하위는 절대 연쇄 삭제하지 말고 미분류(FK null)로 전환할 것 - PRD P0 명시 요구사항."
+}
