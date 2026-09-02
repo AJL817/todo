@@ -24,16 +24,16 @@ export default function InboxPage() {
   const assign = useAssignTodo([queryKeys.inbox, queryKeys.week(weekStart), queryKeys.todos])
 
   return (
-    <div className="flex flex-col gap-6">
-      <header className="flex flex-col gap-1">
-        <h1 className="text-2xl font-bold">미분류</h1>
-        <p className="text-sm opacity-70">
+    <div className="flex flex-col gap-8">
+      <header className="flex flex-col gap-1.5">
+        <h1 className="text-2xl font-semibold tracking-tight text-ink">미분류</h1>
+        <p className="text-sm leading-relaxed text-muted">
           주간 계획에 연결되지 않은 할일입니다. 어떤 진행률에도 반영되지 않으므로 이번 주 계획에 붙여 주세요.
         </p>
       </header>
 
       {inboxQuery.isPending ? (
-        <p data-testid="inbox-loading" className="text-sm opacity-60">
+        <p data-testid="inbox-loading" className="text-sm text-muted">
           불러오는 중…
         </p>
       ) : (

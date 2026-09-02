@@ -47,13 +47,13 @@ function Column({
       ref={setNodeRef}
       data-testid={`column-${status}`}
       data-count={todos.length}
-      className={`flex min-h-[16rem] flex-1 flex-col gap-2 rounded-xl border p-3 transition-colors ${
-        isOver ? 'border-blue-400 bg-blue-50/50 dark:bg-blue-950/30' : 'border-black/10 dark:border-white/10'
+      className={`flex min-h-64 flex-1 flex-col gap-2 rounded-card border p-3 transition-colors ${
+        isOver ? 'border-primary bg-primary-soft' : 'border-hairline bg-surface-soft'
       }`}
     >
-      <header className="flex items-center justify-between px-1">
-        <h2 className="text-sm font-semibold">{STATUS_LABELS[status]}</h2>
-        <span className="text-xs opacity-60" data-testid={`count-${status}`}>
+      <header className="flex items-center justify-between px-1 pb-1">
+        <h2 className="text-[15px] font-semibold text-ink">{STATUS_LABELS[status]}</h2>
+        <span className="text-xs tabular-nums text-muted" data-testid={`count-${status}`}>
           {todos.length}
         </span>
       </header>
@@ -120,7 +120,7 @@ export function KanbanBoard({ todos, onMove, onRename, onDelete }: KanbanBoardPr
 
   return (
     <DndContext sensors={sensors} collisionDetection={closestCenter} onDragEnd={handleDragEnd}>
-      <div className="flex flex-col gap-3 md:flex-row" data-testid="board">
+      <div className="flex flex-col gap-4 md:flex-row" data-testid="board">
         {STATUS_ORDER.map((status) => (
           <Column
             key={status}

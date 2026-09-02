@@ -266,6 +266,12 @@
       "type": "file"
     },
     {
+      "path": "components/Sidebar.tsx",
+      "accessCount": 2,
+      "lastAccessed": 1788358248500,
+      "type": "file"
+    },
+    {
       "path": "docs/PLAN.md",
       "accessCount": 1,
       "lastAccessed": 1788229352833,
@@ -503,12 +509,6 @@
       "path": "docs/VERIFICATION.md",
       "accessCount": 1,
       "lastAccessed": 1788242557615,
-      "type": "file"
-    },
-    {
-      "path": "components/Sidebar.tsx",
-      "accessCount": 1,
-      "lastAccessed": 1788331179085,
       "type": "file"
     },
     {

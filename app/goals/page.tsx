@@ -56,10 +56,10 @@ export default function GoalsPage() {
   }
 
   return (
-    <div className="flex flex-col gap-6">
-      <header className="flex flex-col gap-1">
-        <h1 className="text-2xl font-bold">1년 목표</h1>
-        <p className="text-sm opacity-70">
+    <div className="flex flex-col gap-8">
+      <header className="flex flex-col gap-1.5">
+        <h1 className="text-2xl font-semibold tracking-tight text-ink">1년 목표</h1>
+        <p className="text-sm leading-relaxed text-muted">
           진행률은 <strong>경과한 주</strong>만 세어 평균 냅니다. 미래 주를 미리 만들어 둬도 오늘의 성과가 깎이지 않습니다.
         </p>
       </header>
@@ -75,10 +75,10 @@ export default function GoalsPage() {
             placeholder="1년 목표 제목"
             aria-label="1년 목표 제목"
             data-testid="goal-title"
-            className="rounded-md border border-black/15 px-3 py-2 text-sm dark:border-white/15 dark:bg-slate-900"
+            className="field"
           />
           {error && (
-            <p role="alert" data-testid="goal-title-error" className="text-xs text-red-600">
+            <p role="alert" data-testid="goal-title-error" className="text-xs text-danger">
               {error}
             </p>
           )}
@@ -90,25 +90,25 @@ export default function GoalsPage() {
           inputMode="numeric"
           aria-label="연도"
           data-testid="goal-year"
-          className="w-24 rounded-md border border-black/15 px-3 py-2 text-sm dark:border-white/15 dark:bg-slate-900"
+          className="field w-24"
         />
 
         <button
           type="submit"
           disabled={createGoal.isPending}
           data-testid="goal-submit"
-          className="rounded-md bg-slate-900 px-4 py-2 text-sm font-medium text-white disabled:opacity-50 dark:bg-white dark:text-slate-900"
+          className="btn btn-primary"
         >
           목표 추가
         </button>
       </form>
 
       {goalsQuery.isPending ? (
-        <p data-testid="goals-loading" className="text-sm opacity-60">
+        <p data-testid="goals-loading" className="text-sm text-muted">
           불러오는 중…
         </p>
       ) : goals.length === 0 ? (
-        <p data-testid="goals-empty" className="text-sm opacity-60">
+        <p data-testid="goals-empty" className="text-sm text-muted">
           아직 1년 목표가 없습니다.
         </p>
       ) : (
@@ -126,21 +126,21 @@ export default function GoalsPage() {
 
       <section
         data-testid="orphan-plans"
-        className="flex flex-col gap-3 rounded-xl border border-black/10 p-4 dark:border-white/10"
+        className="card flex flex-col gap-4 p-5"
       >
         <header className="flex items-baseline gap-2">
-          <h2 className="text-sm font-semibold">미분류 주간 계획</h2>
-          <span data-testid="orphan-plan-count" className="text-xs opacity-60">
+          <h2 className="text-[15px] font-semibold text-ink">미분류 주간 계획</h2>
+          <span data-testid="orphan-plan-count" className="text-xs text-muted">
             {orphanPlans.length}건
           </span>
         </header>
 
-        <p className="text-xs opacity-60">
+        <p className="text-xs text-muted">
           목표에 연결되지 않은 주간 계획입니다. 목표를 삭제해도 하위 계획은 지워지지 않고 여기로 옵니다.
         </p>
 
         {orphanPlans.length === 0 ? (
-          <p data-testid="orphan-plans-empty" className="text-xs opacity-60">
+          <p data-testid="orphan-plans-empty" className="text-xs text-muted">
             미분류 주간 계획이 없습니다.
           </p>
         ) : (
@@ -148,7 +148,7 @@ export default function GoalsPage() {
             {orphanPlans.map((plan) => (
               <li key={plan.id} data-testid={`orphan-plan-${plan.id}`} data-title={plan.title} className="flex items-center gap-2 text-xs">
                 <span className="min-w-[10rem] truncate font-medium">{plan.title}</span>
-                <span className="opacity-60">{formatKstDate(plan.weekStart)}</span>
+                <span className="text-muted">{formatKstDate(plan.weekStart)}</span>
                 <select
                   aria-label={`${plan.title} 을 연결할 1년 목표`}
                   data-testid={`orphan-plan-assign-${plan.id}`}
@@ -156,7 +156,7 @@ export default function GoalsPage() {
                   onChange={(event) => {
                     if (event.target.value !== '') linkPlan.mutate({ planId: plan.id, goalId: event.target.value })
                   }}
-                  className="rounded border border-black/15 px-2 py-1 dark:border-white/15 dark:bg-slate-900"
+                  className="field min-h-0 w-auto px-2 py-1.5 text-xs"
                 >
                   <option value="">연결할 목표 선택</option>
                   {goals.map((entry) => (

@@ -1,23 +1,284 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
+/*
+ * 디자인 토큰.
+ *
+ * Airbnb 의 형태 언어를 가져오되 강조색만 인디고로 바꿨다.
+ *  - 강조색은 하나다. 화면의 90% 는 캔버스 + 잉크이고 인디고는 한두 군데에서만 터진다
+ *  - 그림자 단계는 하나뿐이다. 깊이는 그림자를 쌓아서가 아니라 헤어라인과 면 분리로 만든다
+ *  - 디스플레이 웨이트를 낮게 잡는다. 제목을 키우는 대신 여백으로 위계를 만든다
+ *
+ * 참고 문서와 다르게 간 것 두 가지:
+ *  1. 다크 모드를 넣는다 (문서는 "Airbnb 웹에 다크 모드가 없다" 고 하지만 요구사항이 우선)
+ *  2. Airbnb Cereal 은 라이선스 폰트라 문서가 지목한 대체재 Inter 를 쓴다
+ *
+ * 색은 반드시 여기 이름으로 쓴다. 컴포넌트에 slate-700 같은 숫자 팔레트를 직접 쓰면
+ * 다크 모드가 그 자리에서만 깨진다. 이름을 쓰면 아래 두 블록이 알아서 갈아 끼운다.
+ */
 
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
+  --font-sans: var(--font-inter), ui-sans-serif, system-ui, "Apple SD Gothic Neo",
+    "Malgun Gothic", sans-serif;
+
+  --color-canvas: var(--canvas);
+  --color-surface: var(--surface);
+  --color-surface-soft: var(--surface-soft);
+  --color-surface-strong: var(--surface-strong);
+
+  --color-ink: var(--ink);
+  --color-body: var(--body);
+  --color-muted: var(--muted);
+  --color-muted-soft: var(--muted-soft);
+
+  --color-hairline: var(--hairline);
+  --color-border-strong: var(--border-strong);
+
+  --color-primary: var(--primary);
+  --color-primary-soft: var(--primary-soft);
+  --color-primary-accent: var(--primary-accent);
+  --color-on-primary: var(--on-primary);
+
+  --color-danger: var(--danger);
+  --color-danger-soft: var(--danger-soft);
+
+  /* 모서리. 컨트롤은 8px, 카드는 14px. 그 사이 값은 쓰지 않는다 */
+  --radius-control: 8px;
+  --radius-card: 14px;
+
+  /* 시스템 전체에 그림자는 이것 하나뿐이다 */
+  --shadow-float: var(--shadow-float-value);
 }
 
+:root {
+  color-scheme: light;
+
+  --canvas: #ffffff;
+  --surface: #ffffff;
+  --surface-soft: #f7f7f7;
+  --surface-strong: #f0f0f2;
+
+  --ink: #222222;
+  --body: #3f3f3f;
+  --muted: #6a6a6a;
+  --muted-soft: #8b8b8b;
+
+  --hairline: #dddddd;
+  --border-strong: #c1c1c1;
+
+  --primary: #4f46e5;
+  --primary-hover: #4338ca;
+  --primary-soft: #eef2ff;
+  --primary-accent: #4338ca;
+  --on-primary: #ffffff;
+
+  --danger: #c13515;
+  --danger-soft: #fdeeea;
+
+  --shadow-float-value: rgba(0, 0, 0, 0.02) 0 0 0 1px, rgba(0, 0, 0, 0.04) 0 2px 6px 0,
+    rgba(0, 0, 0, 0.1) 0 4px 8px 0;
+}
+
+/*
+ * 다크 값. 두 번 쓰는 이유는 갈래가 둘이기 때문이다.
+ *  - data-theme 이 없으면 시스템 설정을 따른다 (단, light 를 고른 사람은 제외)
+ *  - data-theme="dark" 는 시스템 설정과 무관하게 강제한다
+ */
 @media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0d1117;
-    --foreground: #e6edf3;
+  :root:not([data-theme="light"]) {
+    color-scheme: dark;
+
+    --canvas: #0f1115;
+    --surface: #16181d;
+    --surface-soft: #1b1e24;
+    --surface-strong: #23262e;
+
+    --ink: #ececee;
+    --body: #c7cad1;
+    --muted: #9aa0aa;
+    --muted-soft: #767c86;
+
+    --hairline: #2b2f38;
+    --border-strong: #3d434f;
+
+    /* 어두운 바탕에서는 #4f46e5 가 가라앉는다. 채움은 한 단계 밝히고,
+       글자로 쓰는 강조색은 더 밝은 값을 따로 둔다.
+       #6366f1 은 흰 글자 대비가 4.47:1 로 AA(4.5) 에 아슬하게 못 미쳐 한 단계 낮췄다 */
+    --primary: #5d5fef;
+    --primary-hover: #818cf8;
+    --primary-soft: #232445;
+    --primary-accent: #a5b4fc;
+    --on-primary: #ffffff;
+
+    --danger: #f2755a;
+    --danger-soft: #2e1a16;
+
+    /* 어두운 면에서는 그림자가 보이지 않는다. 대신 밝은 테두리로 띄운다 */
+    --shadow-float-value: rgba(255, 255, 255, 0.06) 0 0 0 1px, rgba(0, 0, 0, 0.5) 0 4px 12px 0;
   }
 }
 
+[data-theme="dark"] {
+  color-scheme: dark;
+
+  --canvas: #0f1115;
+  --surface: #16181d;
+  --surface-soft: #1b1e24;
+  --surface-strong: #23262e;
+
+  --ink: #ececee;
+  --body: #c7cad1;
+  --muted: #9aa0aa;
+  --muted-soft: #767c86;
+
+  --hairline: #2b2f38;
+  --border-strong: #3d434f;
+
+  --primary: #5d5fef;
+  --primary-hover: #818cf8;
+  --primary-soft: #232445;
+  --primary-accent: #a5b4fc;
+  --on-primary: #ffffff;
+
+  --danger: #f2755a;
+  --danger-soft: #2e1a16;
+
+  --shadow-float-value: rgba(255, 255, 255, 0.06) 0 0 0 1px, rgba(0, 0, 0, 0.5) 0 4px 12px 0;
+}
+
 body {
-  background: var(--background);
-  color: var(--foreground);
+  background: var(--canvas);
+  color: var(--ink);
+}
+
+/*
+ * 프리미티브.
+ *
+ * 버튼과 입력을 페이지마다 다시 조합하면 반경과 높이가 조금씩 어긋난다.
+ * 여기 한 곳에서만 정의하고 컴포넌트는 클래스 이름만 붙인다.
+ */
+@layer components {
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    /* 터치 목표 44px 이상 */
+    min-height: 2.75rem;
+    padding: 0 1.25rem;
+    border-radius: var(--radius-control);
+    font-size: 0.9375rem;
+    font-weight: 500;
+    line-height: 1.25;
+    white-space: nowrap;
+    transition: background-color 120ms ease, border-color 120ms ease, color 120ms ease;
+  }
+
+  .btn:focus-visible {
+    outline: 2px solid var(--primary);
+    outline-offset: 2px;
+  }
+
+  .btn-sm {
+    min-height: 2.25rem;
+    padding: 0 0.875rem;
+    font-size: 0.875rem;
+  }
+
+  .btn-primary {
+    background: var(--primary);
+    color: var(--on-primary);
+  }
+
+  .btn-primary:hover:not(:disabled) {
+    background: var(--primary-hover);
+  }
+
+  .btn-secondary {
+    background: var(--surface);
+    color: var(--ink);
+    border: 1px solid var(--border-strong);
+  }
+
+  .btn-secondary:hover:not(:disabled) {
+    border-color: var(--ink);
+  }
+
+  .btn-ghost {
+    background: transparent;
+    color: var(--muted);
+    padding: 0 0.5rem;
+    min-height: 2.25rem;
+  }
+
+  .btn-ghost:hover:not(:disabled) {
+    background: var(--surface-soft);
+    color: var(--ink);
+  }
+
+  .btn:disabled {
+    /* 눌리지 않는다는 것이 색으로도 커서로도 보여야 한다 */
+    opacity: 0.45;
+    cursor: not-allowed;
+  }
+
+  .field {
+    width: 100%;
+    min-height: 2.75rem;
+    padding: 0.625rem 0.75rem;
+    border-radius: var(--radius-control);
+    border: 1px solid var(--hairline);
+    background: var(--surface);
+    color: var(--ink);
+    font-size: 0.9375rem;
+    line-height: 1.4;
+  }
+
+  .field::placeholder {
+    color: var(--muted-soft);
+  }
+
+  .field:focus {
+    /* 링이나 글로우 없이 테두리 색만 바꾼다 */
+    outline: none;
+    border-color: var(--primary);
+  }
+
+  .field:disabled {
+    background: var(--surface-soft);
+    color: var(--muted);
+    cursor: not-allowed;
+  }
+
+  .card {
+    border-radius: var(--radius-card);
+    border: 1px solid var(--hairline);
+    background: var(--surface);
+  }
+
+  .badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.25rem;
+    padding: 0.125rem 0.5rem;
+    border-radius: 9999px;
+    font-size: 0.6875rem;
+    font-weight: 600;
+    line-height: 1.4;
+    white-space: nowrap;
+  }
+
+  .badge-neutral {
+    background: var(--surface-strong);
+    color: var(--muted);
+  }
+
+  .badge-primary {
+    background: var(--primary-soft);
+    color: var(--primary-accent);
+  }
+
+  .badge-danger {
+    background: var(--danger-soft);
+    color: var(--danger);
+  }
 }

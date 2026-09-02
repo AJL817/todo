@@ -23,10 +23,10 @@ export default function BoardPage() {
   const remove = useDeleteTodo(boardScope)
 
   return (
-    <div className="flex flex-col gap-6">
-      <header className="flex flex-col gap-1">
-        <h1 className="text-2xl font-bold">전체 보드</h1>
-        <p className="text-sm opacity-70">카드를 끌어 상태와 순서를 바꿉니다. 드롭 즉시 반영되고 실패하면 되돌아갑니다.</p>
+    <div className="flex flex-col gap-8">
+      <header className="flex flex-col gap-1.5">
+        <h1 className="text-2xl font-semibold tracking-tight text-ink">전체 보드</h1>
+        <p className="text-sm leading-relaxed text-muted">카드를 끌어 상태와 순서를 바꿉니다. 드롭 즉시 반영되고 실패하면 되돌아갑니다.</p>
       </header>
 
       <TodoForm
@@ -38,11 +38,11 @@ export default function BoardPage() {
       />
 
       {todosQuery.isPending ? (
-        <p data-testid="board-loading" className="text-sm opacity-60">
+        <p data-testid="board-loading" className="text-sm text-muted">
           불러오는 중…
         </p>
       ) : todosQuery.isError ? (
-        <p role="alert" className="text-sm text-red-600">
+        <p role="alert" className="text-sm text-danger">
           할일을 불러오지 못했습니다.
         </p>
       ) : (

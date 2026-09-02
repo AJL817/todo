@@ -5,6 +5,7 @@ import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { fetchInbox, fetchMe } from '@/lib/client/api'
 import { queryKeys } from '@/lib/queryKeys'
+import { ThemeToggle } from './ThemeToggle'
 
 interface NavItem {
   href: string
@@ -43,13 +44,13 @@ export function Sidebar() {
     <nav
       data-testid="sidebar"
       aria-label="주요 메뉴"
-      className="flex shrink-0 gap-1 overflow-x-auto border-b border-black/10 p-3 md:h-screen md:w-56 md:flex-col md:overflow-y-auto md:border-b-0 md:border-r dark:border-white/10 md:sticky md:top-0"
+      className="sticky top-0 z-20 flex shrink-0 gap-1 overflow-x-auto border-b border-hairline bg-canvas px-3 py-2.5 md:h-screen md:w-60 md:flex-col md:gap-0.5 md:overflow-y-auto md:border-b-0 md:border-r md:px-3 md:py-5"
     >
-      <div className="hidden px-3 pb-4 pt-2 md:block">
-        <Link href="/" className="text-sm font-bold leading-tight">
+      <div className="hidden px-3 pb-6 md:block">
+        <Link href="/" className="text-[15px] font-semibold leading-tight text-ink">
           목표 연동 칸반
         </Link>
-        <p className="mt-1 text-xs opacity-60">1년 목표 · 주간 계획 · 할일</p>
+        <p className="mt-1 text-xs text-muted">1년 목표 · 주간 계획 · 할일</p>
       </div>
 
       {ITEMS.map((item) => {
@@ -61,18 +62,15 @@ export function Sidebar() {
             href={item.href}
             data-testid={item.testId}
             aria-current={active ? 'page' : undefined}
-            className={`flex shrink-0 items-center justify-between gap-2 whitespace-nowrap rounded-md px-3 py-2 text-sm ${
+            className={`flex shrink-0 items-center justify-between gap-2 whitespace-nowrap rounded-control px-3 py-2 text-sm transition-colors ${
               active
-                ? 'bg-slate-900 font-medium text-white dark:bg-white dark:text-slate-900'
-                : 'hover:bg-black/5 dark:hover:bg-white/10'
+                ? 'bg-primary-soft font-semibold text-primary-accent'
+                : 'text-body hover:bg-surface-soft hover:text-ink'
             }`}
           >
             {item.label}
             {item.href === '/inbox' && inboxCount > 0 && (
-              <span
-                data-testid="inbox-badge"
-                className="rounded-full bg-amber-500 px-1.5 text-[11px] font-semibold text-white"
-              >
+              <span data-testid="inbox-badge" className="badge badge-primary">
                 {inboxCount}
               </span>
             )}
@@ -83,31 +81,29 @@ export function Sidebar() {
       {me.data && (
         <div
           data-testid="current-user"
-          className="mt-auto hidden flex-col gap-2 border-t border-black/10 pt-3 md:flex dark:border-white/10"
+          className="mt-auto hidden flex-col gap-3 border-t border-hairline pt-4 md:flex"
         >
+          <ThemeToggle />
+
           <div className="flex items-center gap-2 px-1">
             {/* 아바타는 외부 URL 이라 next/image 최적화를 쓰지 않는다 */}
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
               src={me.data.user.avatarUrl}
               alt=""
-              width={24}
-              height={24}
+              width={28}
+              height={28}
               data-testid="current-user-avatar"
-              className="rounded-full bg-black/10"
+              className="size-7 rounded-full bg-surface-strong"
             />
-            <span data-testid="current-user-name" className="truncate text-sm font-medium">
+            <span data-testid="current-user-name" className="truncate text-sm font-medium text-ink">
               {me.data.user.username}
             </span>
           </div>
 
           {/* 서버 라우트가 303 으로 되돌리므로 자바스크립트 없이도 동작한다 */}
           <form action="/auth/logout" method="post">
-            <button
-              type="submit"
-              data-testid="logout"
-              className="w-full rounded-md border border-black/15 px-3 py-1.5 text-xs hover:bg-black/5 dark:border-white/15 dark:hover:bg-white/10"
-            >
+            <button type="submit" data-testid="logout" className="btn btn-secondary btn-sm w-full">
               로그아웃
             </button>
           </form>

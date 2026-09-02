@@ -1,41 +1,46 @@
-# GitHub OAuth 로그인 (docs/LOGIN.md) — 완료
+# UI 모던 미니멀 리디자인 (인디고 · 다크모드) — 완료
 
-모든 완료 조건을 구현하고 검증했다. 요구사항 ↔ 테스트 대응은 docs/VERIFICATION.md 참고.
+Airbnb 의 형태 언어를 가져오되 강조색만 인디고(#4F46E5)로 바꿨다.
 
-## 완료 조건 대응
+## 참고 문서와 다르게 간 것
 
-| docs/LOGIN.md 조건 | 결과 |
-|---|---|
-| OAuth App 설정 가이드 / .env.example | `.env.example`, `docs/LOGIN-SETUP.md` |
-| /auth/github, /auth/github/callback 동작 | `app/auth/github/route.ts`, `app/auth/github/callback/route.ts` |
-| username, avatar_url DB 저장 | `models/User.ts` + `upsertGithubUser()` |
-| 미로그인 접근 불가 (401 / 리다이렉트) | API 전부 `requireUser()` → 401, 화면은 `middleware.ts` 가 `/login` 으로 |
-| 본인 할일만 조회/수정/삭제 | `activeFilter(ownerId, ...)` 가 소유자를 필수 인자로 강제 |
-| 로그아웃 시 세션 완전 삭제 | 서버 세션 삭제 + 쿠키 만료. stateless JWT 를 쓰지 않은 이유가 이것 |
-| user_id 컬럼 추가 및 마이그레이션 | 3개 모델에 `userId` + `npm run migrate:user -- <username>` |
+| 문서 | 이 프로젝트 | 이유 |
+|---|---|---|
+| Rausch #ff385c 단일 강조색 | 인디고 #4F46E5 | 요구사항 |
+| "Airbnb 웹에 다크 모드가 없다" | 다크 모드 지원 | 요구사항이 우선 |
+| Airbnb Cereal VF | Inter | 라이선스 폰트라 못 쓴다. 문서가 지목한 대체재 |
+| 다크 CTA 를 밝은 인디고로 | #5d5fef | #6366f1 은 흰 글자 대비 4.47:1 로 AA 미달 |
 
-## 금지 사항 준수
+## 가져온 것
 
-- 기존 할 일 CRUD 로직 변경 금지 → 리포지토리 함수의 **본문 규칙은 그대로**이고
-  소유자 인자와 필터만 더했다. 상태 전이·순서·이월 규칙은 손대지 않았다
-- 하드 코딩된 CLIENT_SECRET 금지 → `requiredEnv()` 로만 읽고 기본값이 없다.
-  없으면 기동 시 예외. `.env.local` 은 gitignore 대상
-- 미완성 상태로 "완료" 보고 금지 → 아래 게이트가 전부 통과한 뒤에만 완료로 적었다
+- 강조색은 하나다. 화면 대부분이 캔버스+잉크이고 인디고는 CTA·활성 메뉴·완료 상태에서만 터진다
+- 그림자 단계는 하나뿐(--shadow-float). 깊이는 헤어라인과 면 분리로 만든다
+- 디스플레이 웨이트를 낮게 잡는다. h1 24px/600, h2 15px/600, 본문 14px
+- 컨트롤 8px / 카드 14px. 그 사이 반경은 쓰지 않는다
 
-## 검증 게이트
+## 구조
 
-tsc 0 · eslint 0 · vitest 344 · playwright 72 · build 0
+- `app/globals.css` — 색·반경·그림자 토큰과 프리미티브(.btn .field .card .badge)
+- `lib/theme.ts` — 테마 선택 + <head> 동기 초기화 스크립트
+- `components/ThemeToggle.tsx` — 시스템/라이트/다크
 
-## 재개할 때 알아 둘 것
+## 새 화면을 만들 때
 
-- `npm run build` 는 dev 서버를 끄고 돌릴 것. 같이 돌리면 `.next` 가 섞여 `/` 가 500 이 난다
-- E2E 는 실제 GitHub 에 붙지 않는다. `scripts/github-oauth-stub.mjs` 를 Playwright 가
-  webServer 로 함께 띄운다 (3199). 앱 안에 테스트 전용 라우트는 없다
-- 로컬 실행 전 `.env.local` 에 `GITHUB_CLIENT_ID` / `GITHUB_CLIENT_SECRET` 필요.
-  절차는 docs/LOGIN-SETUP.md
-- 로그인 도입 전 데이터가 남아 있다면 `npm run migrate:user -- <username>` 을 한 번 돌릴 것.
-  안 돌리면 기존 할일이 화면에서 사라진 것처럼 보인다 (소유자가 없어 필터에 걸린다)
+**숫자 팔레트(slate-700 등)를 직접 쓰지 말 것.** 토큰 이름을 쓰면 다크 모드가
+따라오지만, 숫자를 쓰면 그 자리에서만 깨진다. 유일한 예외는 모달 스크림
+(`bg-black/50`)이고 이건 사양 그대로다.
+
+버튼과 입력은 새로 조합하지 말고 `.btn` / `.field` 를 붙인다. 페이지마다 다시
+만들면 높이와 반경이 조금씩 어긋난다.
+
+## 검증
+
+tsc 0 · eslint 0 · vitest 347 · playwright 72 · build 0
+
+대비는 눈이 아니라 스크립트로 쟀다. 라이트/다크 각각 본문·보조·CTA·강조·오류
+조합을 WCAG AA(4.5:1) 기준으로 확인했고, 그 과정에서 다크 CTA 미달을 잡았다.
 
 ## 남은 것
 
-`docs/BACKLOG.md` 의 "로그인 이후 남은 것" 절. 전부 요구사항 밖이다.
+- 배포는 https://todo-jade-eta-35.vercel.app (Vercel Preview 환경에는 MONGODB_URI 미설정)
+- 중복 OAuth App(id 3832518) 미삭제 — 무해하지만 정리 대상

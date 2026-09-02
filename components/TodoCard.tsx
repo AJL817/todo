@@ -46,16 +46,14 @@ export function TodoCard({ todo, onRename, onDelete, onQuickMove }: TodoCardProp
       data-testid={`card-${todo.id}`}
       data-title={todo.title}
       data-status={todo.status}
-      className={`rounded-lg border border-black/10 bg-white p-3 dark:border-white/10 dark:bg-slate-800 ${
-        isDragging ? 'opacity-50' : ''
-      }`}
+      className={`card p-3 transition-shadow hover:shadow-float ${isDragging ? 'opacity-50' : ''}`}
     >
       <div className="flex items-start gap-2">
         <button
           type="button"
           aria-label={`${todo.title} 카드 이동 손잡이`}
           data-testid={`handle-${todo.id}`}
-          className="mt-0.5 cursor-grab touch-none px-1 text-xs opacity-50 hover:opacity-100"
+          className="mt-0.5 cursor-grab touch-none px-1 text-xs text-muted-soft hover:text-ink"
           {...attributes}
           {...listeners}
         >
@@ -77,14 +75,14 @@ export function TodoCard({ todo, onRename, onDelete, onQuickMove }: TodoCardProp
                 setEditing(false)
               }
             }}
-            className="w-full rounded border border-black/20 px-2 py-1 text-sm dark:border-white/20 dark:bg-slate-900"
+            className="field min-h-0 px-2 py-1 text-sm"
           />
         ) : (
           <button
             type="button"
             onClick={() => setEditing(true)}
             data-testid={`title-${todo.id}`}
-            className="flex-1 text-left text-sm font-medium"
+            className="flex-1 text-left text-sm font-medium leading-snug text-ink"
           >
             {todo.title}
           </button>
@@ -95,17 +93,17 @@ export function TodoCard({ todo, onRename, onDelete, onQuickMove }: TodoCardProp
           aria-label={`${todo.title} 삭제`}
           data-testid={`delete-${todo.id}`}
           onClick={() => onDelete(todo.id)}
-          className="px-1 text-xs opacity-50 hover:opacity-100"
+          className="px-1 text-xs text-muted-soft hover:text-danger"
         >
           ✕
         </button>
       </div>
 
-      <div className="mt-2 flex flex-wrap items-center gap-1.5 text-[11px]">
+      <div className="mt-2.5 flex flex-wrap items-center gap-1.5">
         {dueLabel && (
           <span
             data-testid={`due-${todo.id}`}
-            className="rounded bg-slate-100 px-1.5 py-0.5 text-slate-600 dark:bg-slate-700 dark:text-slate-200"
+            className="badge badge-neutral"
           >
             {dueLabel}
           </span>
@@ -116,7 +114,7 @@ export function TodoCard({ todo, onRename, onDelete, onQuickMove }: TodoCardProp
           <span
             data-testid={`due-outside-${todo.id}`}
             title="마감일이 이 주간 계획의 주 범위를 벗어납니다"
-            className="rounded bg-amber-100 px-1.5 py-0.5 text-amber-800 dark:bg-amber-900 dark:text-amber-100"
+            className="badge badge-danger"
           >
             주 범위 밖
           </span>
@@ -126,7 +124,7 @@ export function TodoCard({ todo, onRename, onDelete, onQuickMove }: TodoCardProp
           <span
             data-testid={`carried-${todo.id}`}
             title={`${carriedCount}번 이월된 할일입니다`}
-            className="rounded bg-purple-100 px-1.5 py-0.5 text-purple-800 dark:bg-purple-900 dark:text-purple-100"
+            className="badge badge-neutral"
           >
             이월 {carriedCount}
           </span>
@@ -135,7 +133,7 @@ export function TodoCard({ todo, onRename, onDelete, onQuickMove }: TodoCardProp
         {completedLabel && (
           <span
             data-testid={`completed-${todo.id}`}
-            className="rounded bg-emerald-100 px-1.5 py-0.5 text-emerald-800 dark:bg-emerald-900 dark:text-emerald-100"
+            className="badge badge-primary"
           >
             완료 {completedLabel}
           </span>
@@ -150,7 +148,7 @@ export function TodoCard({ todo, onRename, onDelete, onQuickMove }: TodoCardProp
             aria-label={`${todo.title} 이전 상태로`}
             disabled={todo.status === 'todo'}
             onClick={() => onQuickMove(todo.id, -1)}
-            className="rounded border border-black/10 px-1.5 py-0.5 text-[11px] disabled:opacity-30 dark:border-white/10"
+            className="flex size-7 items-center justify-center rounded-control border border-hairline text-xs text-body transition-colors hover:border-ink disabled:cursor-not-allowed disabled:opacity-30"
           >
             ←
           </button>
@@ -160,7 +158,7 @@ export function TodoCard({ todo, onRename, onDelete, onQuickMove }: TodoCardProp
             aria-label={`${todo.title} 다음 상태로`}
             disabled={todo.status === 'done'}
             onClick={() => onQuickMove(todo.id, 1)}
-            className="rounded border border-black/10 px-1.5 py-0.5 text-[11px] disabled:opacity-30 dark:border-white/10"
+            className="flex size-7 items-center justify-center rounded-control border border-hairline text-xs text-body transition-colors hover:border-ink disabled:cursor-not-allowed disabled:opacity-30"
           >
             →
           </button>

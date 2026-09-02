@@ -39,5 +39,5 @@ Thumbs.db
 # mongodb-memory-server 바이너리 캐시
 .cache/
 
+# Vercel CLI 링크 정보 (projectId 등)
 .vercel
-.env*

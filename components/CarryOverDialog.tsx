@@ -54,42 +54,43 @@ export function CarryOverDialog({
       role="dialog"
       aria-modal="true"
       aria-label={`${plan.title} 이월`}
-      className="fixed inset-0 z-40 flex items-center justify-center bg-black/40 p-4"
+      className="fixed inset-0 z-40 flex items-center justify-center bg-black/50 p-4"
     >
-      <div className="flex max-h-[80vh] w-full max-w-md flex-col gap-4 overflow-auto rounded-xl bg-white p-5 shadow-xl dark:bg-slate-900">
+      <div className="card flex max-h-[80vh] w-full max-w-md flex-col gap-5 overflow-auto bg-surface p-6 shadow-float">
         <header className="flex flex-col gap-1">
-          <h2 className="text-base font-semibold">다음 주로 이월</h2>
-          <p className="text-xs opacity-70">
+          <h2 className="text-lg font-semibold tracking-tight text-ink">다음 주로 이월</h2>
+          <p className="text-xs leading-relaxed text-body">
             <strong>{plan.title}</strong> 의 미완료 할일을 <strong>{targetWeekLabel}</strong> 주로 옮깁니다.
           </p>
-          <p className="text-xs opacity-60">
+          <p className="text-xs leading-relaxed text-muted">
             옮겨도 이번 주 진행률은 오르지 않습니다. 이 주 안에 끝내지 못했다는 사실은 그대로 남습니다.
           </p>
         </header>
 
         {loading ? (
-          <p data-testid="carryover-loading" className="text-sm opacity-60">
+          <p data-testid="carryover-loading" className="text-sm text-muted">
             대상을 불러오는 중…
           </p>
         ) : todos.length === 0 ? (
-          <p data-testid="carryover-empty" className="text-sm opacity-60">
+          <p data-testid="carryover-empty" className="text-sm text-muted">
             이월할 미완료 할일이 없습니다.
           </p>
         ) : (
           <ul className="flex flex-col gap-2" data-testid="carryover-list">
             {todos.map((todo) => (
-              <li key={todo.id} className="flex items-center gap-2 text-sm">
+              <li key={todo.id} className="flex items-center gap-2.5 text-sm">
                 <input
                   type="checkbox"
                   id={`carryover-check-${todo.id}`}
                   data-testid={`carryover-check-${todo.id}`}
                   checked={!excluded.has(todo.id)}
                   onChange={() => toggle(todo.id)}
+                  className="size-4 accent-[var(--primary)]"
                 />
-                <label htmlFor={`carryover-check-${todo.id}`} data-title={todo.title} className="flex-1">
+                <label htmlFor={`carryover-check-${todo.id}`} data-title={todo.title} className="flex-1 text-body">
                   {todo.title}
                 </label>
-                <span className="rounded bg-slate-100 px-1.5 py-0.5 text-[11px] text-slate-600 dark:bg-slate-700 dark:text-slate-200">
+                <span className="badge badge-neutral">
                   {STATUS_LABELS[todo.status]}
                 </span>
               </li>
@@ -102,7 +103,7 @@ export function CarryOverDialog({
             type="button"
             data-testid="carryover-cancel"
             onClick={onClose}
-            className="rounded-md border border-black/15 px-4 py-2 text-sm dark:border-white/15"
+            className="btn btn-secondary"
           >
             취소
           </button>
@@ -111,7 +112,7 @@ export function CarryOverDialog({
             data-testid="carryover-confirm"
             disabled={pending || loading || selectedIds.length === 0}
             onClick={() => onConfirm(selectedIds)}
-            className="rounded-md bg-slate-900 px-4 py-2 text-sm font-medium text-white disabled:opacity-40 dark:bg-white dark:text-slate-900"
+            className="btn btn-primary"
           >
             {selectedIds.length}건 이월
           </button>

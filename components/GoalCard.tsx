@@ -23,21 +23,21 @@ export function GoalCard({ goal, progress, onDelete }: GoalCardProps) {
     <article
       data-testid={`goal-${goal.id}`}
       data-title={goal.title}
-      className="flex flex-col gap-3 rounded-xl border border-black/10 p-4 dark:border-white/10"
+      className="card flex flex-col gap-3 p-5"
     >
       <header className="flex items-start justify-between gap-2">
         <div className="flex flex-col">
-          <Link href={`/goals/${goal.id}`} data-testid={`goal-link-${goal.id}`} className="text-sm font-semibold underline">
+          <Link href={`/goals/${goal.id}`} data-testid={`goal-link-${goal.id}`} className="text-[15px] font-semibold text-ink hover:text-primary-accent">
             {goal.title}
           </Link>
-          <span className="text-xs opacity-60">{goal.year}년</span>
+          <span className="mt-0.5 text-xs text-muted">{goal.year}년</span>
         </div>
         <button
           type="button"
           aria-label={`${goal.title} 삭제`}
           data-testid={`goal-delete-${goal.id}`}
           onClick={() => onDelete(goal.id)}
-          className="rounded border border-black/15 px-2 py-1 text-[11px] dark:border-white/15"
+          className="btn btn-ghost btn-sm text-xs"
         >
           삭제
         </button>
@@ -45,11 +45,11 @@ export function GoalCard({ goal, progress, onDelete }: GoalCardProps) {
 
       <ProgressBar percent={progress.percent} testId={`goal-bar-${goal.id}`} />
 
-      <p data-testid={`goal-progress-${goal.id}`} className="text-xs font-medium">
+      <p data-testid={`goal-progress-${goal.id}`} className="text-xs font-medium text-body">
         {goalProgressText(progress)}
       </p>
 
-      {goal.description && <p className="text-xs opacity-70">{goal.description}</p>}
+      {goal.description && <p className="text-xs leading-relaxed text-muted">{goal.description}</p>}
     </article>
   )
 }

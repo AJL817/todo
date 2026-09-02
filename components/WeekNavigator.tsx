@@ -15,19 +15,19 @@ export function WeekNavigator({ weekStart }: { weekStart: string }) {
       <Link
         href={`/week/${previous}`}
         data-testid="week-prev"
-        className="rounded-md border border-black/15 px-3 py-1.5 text-sm dark:border-white/15"
+        className="btn btn-secondary btn-sm"
       >
         ← 이전 주
       </Link>
 
-      <span data-testid="week-range" className="px-2 text-sm font-semibold">
+      <span data-testid="week-range" className="px-1 text-sm font-semibold text-ink">
         {formatKstDate(start)} ~ {sunday}
       </span>
 
       <Link
         href={`/week/${next}`}
         data-testid="week-next"
-        className="rounded-md border border-black/15 px-3 py-1.5 text-sm dark:border-white/15"
+        className="btn btn-secondary btn-sm"
       >
         다음 주 →
       </Link>
@@ -36,7 +36,7 @@ export function WeekNavigator({ weekStart }: { weekStart: string }) {
         <Link
           href={`/week/${thisWeek}`}
           data-testid="week-today"
-          className="rounded-md px-3 py-1.5 text-sm underline opacity-70"
+          className="btn btn-ghost btn-sm underline"
         >
           이번 주로
         </Link>

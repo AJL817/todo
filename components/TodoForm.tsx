@@ -56,8 +56,8 @@ export function TodoForm({ onCreate, plans = [], defaultPlanId = null, pending =
 
   return (
     <div className="flex flex-col gap-3">
-      <form onSubmit={submit} data-testid="todo-form" noValidate className="flex flex-wrap items-start gap-2">
-        <div className="flex min-w-[12rem] flex-1 flex-col gap-1">
+      <form onSubmit={submit} data-testid="todo-form" noValidate className="flex flex-wrap items-start gap-2.5">
+        <div className="flex min-w-48 flex-1 flex-col gap-1">
           <input
             value={title}
             onChange={(event) => {
@@ -68,10 +68,10 @@ export function TodoForm({ onCreate, plans = [], defaultPlanId = null, pending =
             aria-label="할 일 제목"
             aria-invalid={error !== null}
             data-testid="todo-title"
-            className="rounded-md border border-black/15 px-3 py-2 text-sm dark:border-white/15 dark:bg-slate-900"
+            className="field"
           />
           {error && (
-            <p role="alert" data-testid="todo-title-error" className="text-xs text-red-600">
+            <p role="alert" data-testid="todo-title-error" className="text-xs text-danger">
               {error}
             </p>
           )}
@@ -83,7 +83,7 @@ export function TodoForm({ onCreate, plans = [], defaultPlanId = null, pending =
           onChange={(event) => setDueDate(event.target.value)}
           aria-label="마감일"
           data-testid="todo-due"
-          className="rounded-md border border-black/15 px-3 py-2 text-sm dark:border-white/15 dark:bg-slate-900"
+          className="field w-auto"
         />
 
         {plans.length > 0 && (
@@ -92,7 +92,7 @@ export function TodoForm({ onCreate, plans = [], defaultPlanId = null, pending =
             onChange={(event) => setChosenPlanId(event.target.value)}
             aria-label="주간 계획"
             data-testid="todo-plan"
-            className="rounded-md border border-black/15 px-3 py-2 text-sm dark:border-white/15 dark:bg-slate-900"
+            className="field w-auto"
           >
             <option value="">미분류</option>
             {plans.map((plan) => (
@@ -108,7 +108,7 @@ export function TodoForm({ onCreate, plans = [], defaultPlanId = null, pending =
           type="submit"
           disabled={pending}
           data-testid="todo-submit"
-          className="rounded-md bg-slate-900 px-4 py-2 text-sm font-medium text-white disabled:opacity-50 dark:bg-white dark:text-slate-900"
+          className="btn btn-primary"
         >
           추가
         </button>
@@ -117,35 +117,35 @@ export function TodoForm({ onCreate, plans = [], defaultPlanId = null, pending =
       {planId !== '' && (
         <section
           data-testid="linked-plan-preview"
-          className="rounded-lg border border-black/10 p-3 dark:border-white/10"
+          className="card bg-surface-soft p-4"
         >
           {selectedPlan.isPending ? (
-            <p className="text-xs opacity-60">연결할 계획을 불러오는 중…</p>
+            <p className="text-xs text-muted">연결할 계획을 불러오는 중…</p>
           ) : selectedPlan.isError || !linked ? (
-            <p role="alert" className="text-xs text-red-600">
+            <p role="alert" className="text-xs text-danger">
               계획 정보를 불러오지 못했습니다.
             </p>
           ) : (
             <>
               <header className="flex flex-wrap items-baseline gap-2">
-                <span className="text-sm font-semibold" data-testid="linked-plan-title">
+                <span className="text-sm font-semibold text-ink" data-testid="linked-plan-title">
                   {linked.plan.title}
                 </span>
-                <span className="text-xs opacity-60">{formatKstDate(linked.plan.weekStart)} 주</span>
+                <span className="text-xs text-muted">{formatKstDate(linked.plan.weekStart)} 주</span>
                 <span
                   data-testid="linked-plan-progress"
-                  className="rounded bg-emerald-100 px-1.5 py-0.5 text-[11px] text-emerald-800 dark:bg-emerald-900 dark:text-emerald-100"
+                  className="badge badge-primary"
                 >
                   {linked.progress.percent}% · {linked.progress.done}/{linked.progress.denominator}
                 </span>
               </header>
 
               {linked.todos.length === 0 ? (
-                <p data-testid="linked-plan-empty" className="mt-2 text-xs opacity-60">
+                <p data-testid="linked-plan-empty" className="mt-3 text-xs text-muted">
                   이 계획에는 아직 할일이 없습니다. 추가하면 첫 번째가 됩니다.
                 </p>
               ) : (
-                <ul data-testid="linked-plan-todos" className="mt-2 flex flex-col gap-1">
+                <ul data-testid="linked-plan-todos" className="mt-3 flex flex-col gap-1.5">
                   {linked.todos.map((todo) => (
                     <li
                       key={todo.id}
@@ -154,18 +154,12 @@ export function TodoForm({ onCreate, plans = [], defaultPlanId = null, pending =
                       className="flex items-center gap-2 text-sm"
                     >
                       <span
-                        className={`rounded px-1.5 py-0.5 text-[11px] ${
-                          todo.status === 'done'
-                            ? 'bg-emerald-100 text-emerald-800 dark:bg-emerald-900 dark:text-emerald-100'
-                            : todo.status === 'doing'
-                              ? 'bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-100'
-                              : 'bg-slate-100 text-slate-600 dark:bg-slate-700 dark:text-slate-200'
-                        }`}
+                        className={`badge ${todo.status === 'done' ? 'badge-primary' : 'badge-neutral'}`}
                       >
                         {STATUS_LABELS[todo.status]}
                       </span>
-                      <span className={todo.status === 'done' ? 'line-through opacity-60' : ''}>{todo.title}</span>
-                      {todo.dueDate && <span className="text-xs opacity-50">{formatKstDate(todo.dueDate)}</span>}
+                      <span className={todo.status === 'done' ? 'text-muted line-through' : 'text-body'}>{todo.title}</span>
+                      {todo.dueDate && <span className="text-xs text-muted-soft">{formatKstDate(todo.dueDate)}</span>}
                     </li>
                   ))}
                 </ul>

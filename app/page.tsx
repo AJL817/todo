@@ -12,10 +12,11 @@ import { STATUS_LABELS, type TodoDto } from '@/lib/dto'
 import { queryKeys } from '@/lib/queryKeys'
 import type { TodoStatus } from '@/models/types'
 
+// 강조색은 하나뿐이다. 끝난 것만 인디고로 띄우고 나머지는 중립으로 둔다.
 const STATUS_STYLE: Record<TodoStatus, string> = {
-  todo: 'bg-slate-100 text-slate-600 dark:bg-slate-700 dark:text-slate-200',
-  doing: 'bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-100',
-  done: 'bg-emerald-100 text-emerald-800 dark:bg-emerald-900 dark:text-emerald-100',
+  todo: 'badge-neutral',
+  doing: 'badge-neutral',
+  done: 'badge-primary',
 }
 
 function Panel({
@@ -32,10 +33,10 @@ function Panel({
   return (
     <section
       data-testid={testId}
-      className="flex flex-col gap-3 rounded-xl border border-black/10 p-4 dark:border-white/10"
+      className="card flex flex-col gap-4 p-5"
     >
       <header className="flex flex-wrap items-baseline justify-between gap-2">
-        <h2 className="text-sm font-semibold">{title}</h2>
+        <h2 className="text-[15px] font-semibold text-ink">{title}</h2>
         {action}
       </header>
       {children}
@@ -85,10 +86,10 @@ export default function DashboardPage() {
     plans.find((plan) => plan.id === todo.weeklyPlanId)?.title ?? '미분류'
 
   return (
-    <div className="flex flex-col gap-6">
-      <header className="flex flex-col gap-1">
-        <h1 className="text-2xl font-bold">대시보드</h1>
-        <p className="text-sm opacity-70">
+    <div className="flex flex-col gap-8">
+      <header className="flex flex-col gap-1.5">
+        <h1 className="text-2xl font-semibold tracking-tight text-ink">대시보드</h1>
+        <p className="text-sm leading-relaxed text-muted">
           {today} · 오늘 처리할 일과 그것이 이번 주와 올해 목표에 얼마나 기여하는지 함께 봅니다.
         </p>
       </header>
@@ -97,15 +98,15 @@ export default function DashboardPage() {
         testId="dashboard-today"
         title="오늘 할 일"
         action={
-          <span className="text-xs opacity-60">
+          <span className="text-xs text-muted">
             오늘 마감 · 지난 미완료 · 진행 중
           </span>
         }
       >
         {dayQuery.isPending ? (
-          <p className="text-sm opacity-60">불러오는 중…</p>
+          <p className="text-sm text-muted">불러오는 중…</p>
         ) : dayTodos.length === 0 ? (
-          <p data-testid="today-empty" className="text-sm opacity-60">
+          <p data-testid="today-empty" className="text-sm text-muted">
             오늘 처리할 항목이 없습니다. <Link href="/todos" className="underline">할일</Link> 에서 추가하세요.
           </p>
         ) : (
@@ -115,22 +116,22 @@ export default function DashboardPage() {
                 key={todo.id}
                 data-testid={`today-${todo.id}`}
                 data-title={todo.title}
-                className="flex flex-wrap items-center gap-2 rounded-lg border border-black/10 p-2 dark:border-white/10"
+                className="flex flex-wrap items-center gap-2 rounded-control border border-hairline px-3 py-2.5"
               >
-                <span className={`rounded px-1.5 py-0.5 text-[11px] ${STATUS_STYLE[todo.status]}`}>
+                <span className={`badge ${STATUS_STYLE[todo.status]}`}>
                   {STATUS_LABELS[todo.status]}
                 </span>
-                <span className={`flex-1 text-sm ${todo.status === 'done' ? 'line-through opacity-60' : ''}`}>
+                <span className={`flex-1 text-sm ${todo.status === 'done' ? 'text-muted line-through' : 'text-body'}`}>
                   {todo.title}
                 </span>
-                <span className="text-xs opacity-50">{planTitleOf(todo)}</span>
+                <span className="text-xs text-muted-soft">{planTitleOf(todo)}</span>
                 {todo.dueDate && (
                   <span
                     data-testid={`today-due-${todo.id}`}
                     className={`text-xs ${
                       formatKstDate(todo.dueDate) < today && todo.status !== 'done'
-                        ? 'font-medium text-red-600'
-                        : 'opacity-50'
+                        ? 'font-medium text-danger'
+                        : 'text-muted-soft'
                     }`}
                   >
                     {formatKstDate(todo.dueDate)}
@@ -141,7 +142,7 @@ export default function DashboardPage() {
                     type="button"
                     data-testid={`today-done-${todo.id}`}
                     onClick={() => move.mutate({ id: todo.id, toStatus: 'done', beforeId: null, afterId: null })}
-                    className="rounded border border-black/15 px-2 py-1 text-[11px] dark:border-white/15"
+                    className="btn btn-ghost btn-sm text-xs"
                   >
                     완료
                   </button>
@@ -157,13 +158,13 @@ export default function DashboardPage() {
           testId="dashboard-week"
           title="이번 주"
           action={
-            <Link href={`/week/${thisWeek}`} className="text-xs underline opacity-70">
+            <Link href={`/week/${thisWeek}`} className="text-xs text-muted underline hover:text-ink">
               주간 계획 열기
             </Link>
           }
         >
           {plans.length === 0 ? (
-            <p data-testid="week-empty" className="text-sm opacity-60">
+            <p data-testid="week-empty" className="text-sm text-muted">
               이번 주 계획이 없습니다.
             </p>
           ) : (
@@ -184,7 +185,7 @@ export default function DashboardPage() {
           )}
 
           {(weekQuery.data?.carriedOut.length ?? 0) > 0 && (
-            <p data-testid="dash-carried-out" className="text-xs opacity-60">
+            <p data-testid="dash-carried-out" className="text-xs text-muted">
               이 주에서 이월돼 나간 할일 {weekQuery.data?.carriedOut.length}건이 분모에 남아 있습니다.
             </p>
           )}
@@ -194,13 +195,13 @@ export default function DashboardPage() {
           testId="dashboard-goals"
           title="1년 목표"
           action={
-            <Link href="/goals" className="text-xs underline opacity-70">
+            <Link href="/goals" className="text-xs text-muted underline hover:text-ink">
               목표 열기
             </Link>
           }
         >
           {goals.length === 0 ? (
-            <p data-testid="goals-empty-dash" className="text-sm opacity-60">
+            <p data-testid="goals-empty-dash" className="text-sm text-muted">
               아직 1년 목표가 없습니다.
             </p>
           ) : (
@@ -212,7 +213,7 @@ export default function DashboardPage() {
                     label={entry.goal.title}
                     testId={`dash-goal-progress-${entry.goal.id}`}
                   />
-                  <p data-testid={`dash-goal-text-${entry.goal.id}`} className="mt-1 text-xs opacity-70">
+                  <p data-testid={`dash-goal-text-${entry.goal.id}`} className="mt-1 text-xs text-muted">
                     {goalProgressText(entry.progress)}
                   </p>
                 </li>
@@ -227,14 +228,14 @@ export default function DashboardPage() {
           testId="dashboard-inbox"
           title="미분류"
           action={
-            <Link href="/inbox" className="text-xs underline opacity-70">
+            <Link href="/inbox" className="text-xs text-muted underline hover:text-ink">
               해소하러 가기
             </Link>
           }
         >
           <p data-testid="dash-inbox-count" className="text-sm">
             {inboxCount === 0 ? (
-              <span className="opacity-60">미분류 할일이 없습니다.</span>
+              <span className="text-muted">미분류 할일이 없습니다.</span>
             ) : (
               <>
                 <strong>{inboxCount}건</strong> 이 주간 계획에 연결되지 않아 어떤 진행률에도 반영되지 않습니다.
@@ -245,7 +246,7 @@ export default function DashboardPage() {
 
         <Panel testId="dashboard-metrics" title="성공 지표">
           {!metrics ? (
-            <p className="text-sm opacity-60">불러오는 중…</p>
+            <p className="text-sm text-muted">불러오는 중…</p>
           ) : (
             <ul className="flex flex-col gap-1.5 text-sm">
               {(
@@ -255,15 +256,21 @@ export default function DashboardPage() {
                   ['M3', '이월 적체율', metrics.carryOverBacklogRate, 'carryOverBacklogRate', metrics.detail.activeTodos],
                 ] as const
               ).map(([id, label, value, key, sample]) => (
-                <li key={id} data-testid={`metric-${key}`} className="flex items-center gap-2">
-                  <span className="w-6 text-xs opacity-50">{id}</span>
-                  <span className="flex-1">{label}</span>
+                <li key={id} data-testid={`metric-${key}`} className="flex items-center gap-2.5">
+                  <span className="w-6 text-xs font-medium text-muted-soft">{id}</span>
+                  <span className="flex-1 truncate text-body">{label}</span>
                   {/* 표본이 0이면 0% 는 미달이 아니라 잴 것이 없다는 뜻이다 */}
-                  <span className="font-semibold">{sample === 0 ? '—' : `${value}%`}</span>
-                  <span className="w-10 text-right text-[11px] opacity-60">
+                  <span className="w-12 text-right font-semibold tabular-nums text-ink">
+                    {sample === 0 ? '—' : `${value}%`}
+                  </span>
+                  <span
+                    className={`badge ${
+                      sample === 0 ? 'badge-neutral' : meetsTarget(key, value) ? 'badge-primary' : 'badge-danger'
+                    }`}
+                  >
                     {sample === 0 ? '표본 없음' : meetsTarget(key, value) ? '달성' : '미달'}
                   </span>
-                  <span className="w-16 text-right text-[11px] opacity-40">
+                  <span className="w-20 shrink-0 text-right text-[11px] tabular-nums text-muted-soft">
                     목표 {METRIC_TARGETS[key].direction === 'atLeast' ? '≥' : '≤'} {METRIC_TARGETS[key].target}%
                   </span>
                 </li>

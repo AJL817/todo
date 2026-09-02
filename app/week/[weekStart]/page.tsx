@@ -53,17 +53,17 @@ export default function WeekPage({ params }: { params: Promise<{ weekStart: stri
   const carryOverPlan = plans.find((plan) => plan.id === carryOverPlanId) ?? null
 
   return (
-    <div className="flex flex-col gap-6">
+    <div className="flex flex-col gap-8">
       <header className="flex flex-col gap-3">
-        <h1 className="text-2xl font-bold">주간 뷰</h1>
+        <h1 className="text-2xl font-semibold tracking-tight text-ink">주간 뷰</h1>
         <WeekNavigator weekStart={weekStart} />
-        <p className="text-sm opacity-70">
+        <p className="text-sm leading-relaxed text-muted">
           이 주 계획에 <strong>소속된</strong> 할일을 모읍니다. 마감일 기준이 아니므로 마감일이 없는 할일도 보입니다.
         </p>
       </header>
 
       <section className="flex flex-col gap-3">
-        <h2 className="text-sm font-semibold">주간 계획</h2>
+        <h2 className="text-[15px] font-semibold text-ink">주간 계획</h2>
 
         <form
           data-testid="plan-form"
@@ -82,19 +82,19 @@ export default function WeekPage({ params }: { params: Promise<{ weekStart: stri
             placeholder="주간 계획 제목"
             aria-label="주간 계획 제목"
             data-testid="plan-title"
-            className="min-w-[12rem] flex-1 rounded-md border border-black/15 px-3 py-2 text-sm dark:border-white/15 dark:bg-slate-900"
+            className="field min-w-48 flex-1"
           />
           <button
             type="submit"
             data-testid="plan-submit"
-            className="rounded-md bg-slate-900 px-4 py-2 text-sm font-medium text-white dark:bg-white dark:text-slate-900"
+            className="btn btn-primary"
           >
             계획 추가
           </button>
         </form>
 
         {plans.length === 0 ? (
-          <p data-testid="plan-empty" className="text-sm opacity-60">
+          <p data-testid="plan-empty" className="text-sm text-muted">
             이 주에는 계획이 없습니다.
           </p>
         ) : (
@@ -115,7 +115,7 @@ export default function WeekPage({ params }: { params: Promise<{ weekStart: stri
       </section>
 
       <section className="flex flex-col gap-3">
-        <h2 className="text-sm font-semibold">이 주의 할일</h2>
+        <h2 className="text-[15px] font-semibold text-ink">이 주의 할일</h2>
 
         <TodoForm
           onCreate={(payload) => createTodo.mutate(payload)}
@@ -127,7 +127,7 @@ export default function WeekPage({ params }: { params: Promise<{ weekStart: stri
         />
 
         {weekQuery.isPending ? (
-          <p data-testid="week-loading" className="text-sm opacity-60">
+          <p data-testid="week-loading" className="text-sm text-muted">
             불러오는 중…
           </p>
         ) : (
@@ -143,15 +143,15 @@ export default function WeekPage({ params }: { params: Promise<{ weekStart: stri
       {carriedOut.length > 0 && (
         <section
           data-testid="carried-out-section"
-          className="flex flex-col gap-2 rounded-xl border border-black/10 p-4 dark:border-white/10"
+          className="card flex flex-col gap-3 p-5"
         >
           <header className="flex items-baseline gap-2">
-            <h2 className="text-sm font-semibold">이 주에서 이월돼 나간 할일</h2>
-            <span data-testid="carried-out-count" className="text-xs opacity-60">
+            <h2 className="text-[15px] font-semibold text-ink">이 주에서 이월돼 나간 할일</h2>
+            <span data-testid="carried-out-count" className="text-xs text-muted">
               {carriedOut.length}건
             </span>
           </header>
-          <p className="text-xs opacity-60">
+          <p className="text-xs text-muted">
             다음 주로 옮겨졌지만 <strong>이 주의 진행률 분모에는 그대로 남습니다.</strong> 그 주 안에 끝내지 못했다는
             사실은 나중에 완료해도 바뀌지 않기 때문입니다.
           </p>
@@ -161,10 +161,10 @@ export default function WeekPage({ params }: { params: Promise<{ weekStart: stri
                 key={todo.id}
                 data-testid={`carried-out-${todo.id}`}
                 data-title={todo.title}
-                className="inline-flex items-center gap-1.5 rounded-full border border-black/15 px-3 py-1 text-sm opacity-70 dark:border-white/15"
+                className="inline-flex items-center gap-1.5 rounded-full border border-hairline px-3.5 py-1.5 text-sm text-muted"
               >
                 {todo.title}
-                <span className="rounded bg-purple-100 px-1.5 py-0.5 text-[10px] text-purple-800 dark:bg-purple-900 dark:text-purple-100">
+                <span className="badge badge-neutral">
                   이월됨
                 </span>
               </li>
