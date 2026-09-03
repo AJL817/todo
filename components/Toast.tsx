@@ -48,8 +48,8 @@ export function ToastProvider({ children }: { children: ReactNode }) {
             key={message.id}
             role="alert"
             data-testid={message.tone === 'error' ? 'toast-error' : 'toast-info'}
-            className={`pointer-events-auto rounded-control px-4 py-2.5 text-sm font-medium shadow-float ${
-              message.tone === 'error' ? 'bg-danger text-white' : 'bg-ink text-canvas'
+            className={`pointer-events-auto rounded-control px-4 py-2.5 t-caption shadow-float ${
+              message.tone === 'error' ? 'bg-danger text-canvas' : 'bg-ink text-canvas'
             }`}
           >
             {message.text}

@@ -58,8 +58,8 @@ export default function GoalsPage() {
   return (
     <div className="flex flex-col gap-12">
       <header className="flex flex-col gap-1.5 mb-4">
-        <h1 className="t-display text-ink">1년 목표</h1>
-        <p className="t-body text-muted">
+        <h1 className="t-display-xl text-ink">1년 목표</h1>
+        <p className="t-body-md text-muted">
           진행률은 <strong>경과한 주</strong>만 세어 평균 냅니다. 미래 주를 미리 만들어 둬도 오늘의 성과가 깎이지 않습니다.
         </p>
       </header>
@@ -78,7 +78,7 @@ export default function GoalsPage() {
             className="field"
           />
           {error && (
-            <p role="alert" data-testid="goal-title-error" className="text-xs text-danger">
+            <p role="alert" data-testid="goal-title-error" className="t-caption-sm text-danger">
               {error}
             </p>
           )}
@@ -104,11 +104,11 @@ export default function GoalsPage() {
       </form>
 
       {goalsQuery.isPending ? (
-        <p data-testid="goals-loading" className="t-body text-muted">
+        <p data-testid="goals-loading" className="t-body-md text-muted">
           불러오는 중…
         </p>
       ) : goals.length === 0 ? (
-        <p data-testid="goals-empty" className="t-body text-muted">
+        <p data-testid="goals-empty" className="t-body-md text-muted">
           아직 1년 목표가 없습니다.
         </p>
       ) : (
@@ -129,24 +129,24 @@ export default function GoalsPage() {
         className="flex flex-col gap-4"
       >
         <header className="flex items-baseline gap-2">
-          <h2 className="t-section text-ink">미분류 주간 계획</h2>
-          <span data-testid="orphan-plan-count" className="text-xs text-muted">
+          <h2 className="t-display-sm text-ink">미분류 주간 계획</h2>
+          <span data-testid="orphan-plan-count" className="t-caption-sm text-muted">
             {orphanPlans.length}건
           </span>
         </header>
 
-        <p className="text-xs text-muted">
+        <p className="t-caption-sm text-muted">
           목표에 연결되지 않은 주간 계획입니다. 목표를 삭제해도 하위 계획은 지워지지 않고 여기로 옵니다.
         </p>
 
         {orphanPlans.length === 0 ? (
-          <p data-testid="orphan-plans-empty" className="text-xs text-muted">
+          <p data-testid="orphan-plans-empty" className="t-caption-sm text-muted">
             미분류 주간 계획이 없습니다.
           </p>
         ) : (
           <ul className="flex flex-col gap-2">
             {orphanPlans.map((plan) => (
-              <li key={plan.id} data-testid={`orphan-plan-${plan.id}`} data-title={plan.title} className="flex items-center gap-2 text-xs">
+              <li key={plan.id} data-testid={`orphan-plan-${plan.id}`} data-title={plan.title} className="flex items-center gap-2 t-caption-sm">
                 <span className="min-w-[10rem] truncate font-medium">{plan.title}</span>
                 <span className="text-muted">{formatKstDate(plan.weekStart)}</span>
                 <select
@@ -156,7 +156,7 @@ export default function GoalsPage() {
                   onChange={(event) => {
                     if (event.target.value !== '') linkPlan.mutate({ planId: plan.id, goalId: event.target.value })
                   }}
-                  className="field min-h-0 w-auto px-2 py-1.5 text-xs"
+                  className="field min-h-0 w-auto px-2 py-1.5 t-caption-sm"
                 >
                   <option value="">연결할 목표 선택</option>
                   {goals.map((entry) => (

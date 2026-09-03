@@ -58,27 +58,27 @@ export function CarryOverDialog({
     >
       <div className="card-liftable flex max-h-[80vh] w-full max-w-md flex-col gap-5 overflow-auto p-6 shadow-float">
         <header className="flex flex-col gap-1">
-          <h2 className="text-lg font-semibold tracking-tight text-ink">다음 주로 이월</h2>
-          <p className="text-xs leading-relaxed text-body">
+          <h2 className="t-display-sm text-ink">다음 주로 이월</h2>
+          <p className="t-body-sm text-body">
             <strong>{plan.title}</strong> 의 미완료 할일을 <strong>{targetWeekLabel}</strong> 주로 옮깁니다.
           </p>
-          <p className="text-xs leading-relaxed text-muted">
+          <p className="t-body-sm text-muted">
             옮겨도 이번 주 진행률은 오르지 않습니다. 이 주 안에 끝내지 못했다는 사실은 그대로 남습니다.
           </p>
         </header>
 
         {loading ? (
-          <p data-testid="carryover-loading" className="t-body text-muted">
+          <p data-testid="carryover-loading" className="t-body-md text-muted">
             대상을 불러오는 중…
           </p>
         ) : todos.length === 0 ? (
-          <p data-testid="carryover-empty" className="t-body text-muted">
+          <p data-testid="carryover-empty" className="t-body-md text-muted">
             이월할 미완료 할일이 없습니다.
           </p>
         ) : (
           <ul className="flex flex-col gap-2" data-testid="carryover-list">
             {todos.map((todo) => (
-              <li key={todo.id} className="flex items-center gap-2.5 text-sm">
+              <li key={todo.id} className="flex items-center gap-2.5 t-body-sm">
                 <input
                   type="checkbox"
                   id={`carryover-check-${todo.id}`}

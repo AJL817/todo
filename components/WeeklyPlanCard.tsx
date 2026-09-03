@@ -30,14 +30,14 @@ export function WeeklyPlanCard({
       className="card-liftable flex flex-col gap-4 p-5"
     >
       <header className="flex items-start justify-between gap-2">
-        <h3 className="t-title text-ink">{plan.title}</h3>
+        <h3 className="t-title-md text-ink">{plan.title}</h3>
         <div className="flex gap-1">
           {onCarryOver && (
             <button
               type="button"
               data-testid={`plan-carryover-${plan.id}`}
               onClick={() => onCarryOver(plan.id)}
-              className="btn btn-ghost btn-sm text-xs"
+              className="btn btn-ghost btn-sm"
             >
               다음 주로 이월
             </button>
@@ -47,7 +47,7 @@ export function WeeklyPlanCard({
             aria-label={`${plan.title} 삭제`}
             data-testid={`plan-delete-${plan.id}`}
             onClick={() => onDelete(plan.id)}
-            className="btn btn-ghost btn-sm text-xs"
+            className="btn btn-ghost btn-sm"
           >
             삭제
           </button>
@@ -66,14 +66,14 @@ export function WeeklyPlanCard({
         }
       />
 
-      <label className="flex items-center gap-2 text-xs">
-        <span className="shrink-0 text-muted">1년 목표</span>
+      <label className="flex items-center gap-2 t-caption-sm">
+        <span className="t-caption shrink-0 text-muted">1년 목표</span>
         <select
           aria-label={`${plan.title} 의 1년 목표`}
           data-testid={`plan-goal-${plan.id}`}
           value={plan.goalId ?? ''}
           onChange={(event) => onLinkGoal(plan.id, event.target.value === '' ? null : event.target.value)}
-          className="field min-h-0 flex-1 px-2 py-1.5 text-xs"
+          className="field min-h-0 flex-1 px-2 py-1.5 t-caption-sm"
         >
           <option value="">미분류</option>
           {goals.map((goal) => (

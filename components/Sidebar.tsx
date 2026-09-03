@@ -47,10 +47,10 @@ export function Sidebar() {
       className="sticky top-0 z-20 flex shrink-0 gap-1 overflow-x-auto border-b border-hairline bg-canvas px-3 py-2.5 md:h-screen md:w-64 md:flex-col md:gap-0.5 md:overflow-y-auto md:border-b-0 md:border-r md:px-3 md:py-5"
     >
       <div className="hidden px-3 pb-6 md:block">
-        <Link href="/" className="t-title text-ink">
+        <Link href="/" className="t-title-md text-ink">
           목표 연동 칸반
         </Link>
-        <p className="mt-1.5 text-[13px] text-muted">1년 목표 · 주간 계획 · 할일</p>
+        <p className="mt-1.5 t-caption-sm text-muted">1년 목표 · 주간 계획 · 할일</p>
       </div>
 
       {ITEMS.map((item) => {
@@ -62,9 +62,9 @@ export function Sidebar() {
             href={item.href}
             data-testid={item.testId}
             aria-current={active ? 'page' : undefined}
-            className={`flex shrink-0 items-center justify-between gap-2 whitespace-nowrap rounded-control border-l-2 px-3.5 py-2.5 text-[15px] transition-colors ${
+            className={`flex shrink-0 items-center justify-between gap-2 whitespace-nowrap rounded-control border-l-2 px-3.5 py-2.5 t-nav-link transition-colors ${
               active
-                ? 'border-primary bg-primary-soft font-semibold text-ink'
+                ? 'border-primary bg-primary-soft text-ink'
                 : 'border-transparent text-body hover:bg-surface-soft hover:text-ink'
             }`}
           >
@@ -96,7 +96,7 @@ export function Sidebar() {
               data-testid="current-user-avatar"
               className="size-7 rounded-full bg-surface-strong"
             />
-            <span data-testid="current-user-name" className="truncate text-[15px] font-medium text-ink">
+            <span data-testid="current-user-name" className="truncate t-title-sm text-ink">
               {me.data.user.username}
             </span>
           </div>

@@ -6,13 +6,37 @@ type Box = { x: number; y: number; width: number; height: number } | null
 export const STUB_URL = process.env.GITHUB_STUB_URL ?? 'http://127.0.0.1:3199'
 
 /**
+ * 테스트 셋업용 요청. 끊긴 연결 한 번은 눈감고 다시 시도한다.
+ *
+ * 72개 케이스가 15분 동안 dev 서버를 두드리면 이따금 소켓이 끊긴다 (ECONNRESET).
+ * 그건 앱의 결함이 아니라 하네스의 성질이고, 실제로 그 케이스들은 단독 실행에서
+ * 전부 통과한다. 그렇다고 단언까지 재시도하면 진짜 결함을 가리게 되므로
+ * **셋업(로그인·데이터 초기화)에만** 적용한다. 검증 구간은 손대지 않는다.
+ */
+async function retryOnce<T>(what: string, run: () => Promise<T>): Promise<T> {
+  try {
+    return await run()
+  } catch (error) {
+    const message = error instanceof Error ? error.message : String(error)
+    if (!/ECONNRESET|socket hang up|ECONNREFUSED/i.test(message)) throw error
+
+    // 조용히 삼키면 하네스가 얼마나 불안정한지 알 수 없다. 남기고 한 번만 더 한다.
+    console.warn(`[e2e] 셋업 재시도: ${what} (${message})`)
+    await new Promise((resolve) => setTimeout(resolve, 500))
+    return run()
+  }
+}
+
+/**
  * GitHub 로그인 (docs/LOGIN.md).
  *
  * 실제 GitHub 대신 스텁이 곧바로 콜백으로 돌려보내므로, /auth/github 로 한 번 이동하면
  * 리다이렉트 사슬을 타고 로그인이 끝난다. 스텁에 "누구로 로그인할지" 를 먼저 알려 준다.
  */
 export async function loginAs(page: Page, login = 'e2e-user', githubId = 1001): Promise<void> {
-  const set = await page.request.post(`${STUB_URL}/__set-user`, { data: { login, id: githubId } })
+  const set = await retryOnce('스텁 사용자 설정', () =>
+    page.request.post(`${STUB_URL}/__set-user`, { data: { login, id: githubId } }),
+  )
   expect(set.ok(), await set.text()).toBe(true)
 
   await page.goto('/auth/github')
@@ -31,7 +55,7 @@ export async function logoutViaUi(page: Page): Promise<void> {
  * 테스트끼리 간섭하지 않도록 매 케이스 시작 시 전부 비운다.
  */
 export async function resetData(page: Page): Promise<void> {
-  const response = await page.request.get('/api/todos')
+  const response = await retryOnce('할일 목록 조회', () => page.request.get('/api/todos'))
   // 여기서 실패하면 대개 서버가 DB 에 붙지 못한 것이다. 본문을 그대로 보여 준다.
   expect(response.ok(), `GET /api/todos 실패: ${await response.text()}`).toBe(true)
   const { todos } = (await response.json()) as { todos: { id: string }[] }
@@ -39,13 +63,13 @@ export async function resetData(page: Page): Promise<void> {
     await page.request.delete(`/api/todos/${todo.id}`)
   }
 
-  const plans = await page.request.get('/api/weekly-plans')
+  const plans = await retryOnce('주간 계획 조회', () => page.request.get('/api/weekly-plans'))
   const { plans: planList } = (await plans.json()) as { plans: { id: string }[] }
   for (const plan of planList) {
     await page.request.delete(`/api/weekly-plans/${plan.id}`)
   }
 
-  const goals = await page.request.get('/api/goals')
+  const goals = await retryOnce('목표 조회', () => page.request.get('/api/goals'))
   const { goals: goalList } = (await goals.json()) as { goals: { goal: { id: string } }[] }
   for (const entry of goalList) {
     await page.request.delete(`/api/goals/${entry.goal.id}`)

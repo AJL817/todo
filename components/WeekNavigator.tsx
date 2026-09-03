@@ -20,7 +20,7 @@ export function WeekNavigator({ weekStart }: { weekStart: string }) {
         ← 이전 주
       </Link>
 
-      <span data-testid="week-range" className="px-1 text-sm font-semibold text-ink">
+      <span data-testid="week-range" className="px-1 t-title-sm text-ink">
         {formatKstDate(start)} ~ {sunday}
       </span>
 

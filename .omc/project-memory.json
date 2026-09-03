@@ -230,6 +230,12 @@
   },
   "hotPaths": [
     {
+      "path": "components/Sidebar.tsx",
+      "accessCount": 3,
+      "lastAccessed": 1788418417995,
+      "type": "file"
+    },
+    {
       "path": "lib/repositories/goalRepo.ts",
       "accessCount": 2,
       "lastAccessed": 1788230851084,
@@ -266,9 +272,15 @@
       "type": "file"
     },
     {
-      "path": "components/Sidebar.tsx",
+      "path": "app/goals/[id]/page.tsx",
       "accessCount": 2,
-      "lastAccessed": 1788358248500,
+      "lastAccessed": 1788415128633,
+      "type": "file"
+    },
+    {
+      "path": "components/Toast.tsx",
+      "accessCount": 2,
+      "lastAccessed": 1788418381070,
       "type": "file"
     },
     {
@@ -380,12 +392,6 @@
       "type": "file"
     },
     {
-      "path": "components/Toast.tsx",
-      "accessCount": 1,
-      "lastAccessed": 1788231740604,
-      "type": "file"
-    },
-    {
       "path": "hooks/useTodoMutations.ts",
       "accessCount": 1,
       "lastAccessed": 1788231793482,
@@ -455,12 +461,6 @@
       "path": "app/goals/page.tsx",
       "accessCount": 1,
       "lastAccessed": 1788240440225,
-      "type": "file"
-    },
-    {
-      "path": "app/goals/[id]/page.tsx",
-      "accessCount": 1,
-      "lastAccessed": 1788240461965,
       "type": "file"
     },
     {

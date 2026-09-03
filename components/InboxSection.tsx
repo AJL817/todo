@@ -34,7 +34,7 @@ function InboxChip({ todo }: { todo: TodoDto }) {
       style={transform ? { transform: `translate3d(${transform.x}px, ${transform.y}px, 0)` } : undefined}
       data-testid={`inbox-item-${todo.id}`}
       data-title={todo.title}
-      className={`inline-flex cursor-grab touch-none items-center gap-1 rounded-full border border-hairline bg-surface px-3.5 py-1.5 text-sm text-ink transition-shadow hover:shadow-float ${
+      className={`inline-flex cursor-grab touch-none items-center gap-1 rounded-full border border-hairline bg-surface px-3.5 py-1.5 t-body-sm text-ink transition-shadow hover:shadow-float ${
         isDragging ? 'opacity-50' : ''
       }`}
       {...attributes}
@@ -52,7 +52,7 @@ function PlanDropTarget({ plan }: { plan: WeeklyPlanDto }) {
     <span
       ref={setNodeRef}
       data-testid={`inbox-drop-${plan.id}`}
-      className={`rounded-control border border-dashed px-3 py-2 text-xs transition-colors ${
+      className={`rounded-control border border-dashed px-3 py-2 t-caption-sm transition-colors ${
         isOver ? 'border-primary bg-primary-soft text-primary-accent' : 'border-border-strong text-muted'
       }`}
     >
@@ -79,14 +79,14 @@ export function InboxSection({ todos, plans, onAssign, heading = '미분류' }: 
   return (
     <section data-testid="inbox-section" className="flex flex-col gap-4">
       <header className="flex items-baseline gap-2">
-        <h2 className="t-section text-ink">{heading}</h2>
-        <span data-testid="inbox-count" className="text-xs text-muted">
+        <h2 className="t-display-sm text-ink">{heading}</h2>
+        <span data-testid="inbox-count" className="t-caption-sm text-muted">
           {todos.length}건
         </span>
       </header>
 
       {todos.length === 0 ? (
-        <p data-testid="inbox-empty" className="text-xs text-muted">
+        <p data-testid="inbox-empty" className="t-caption-sm text-muted">
           미분류 할일이 없습니다.
         </p>
       ) : (
@@ -100,7 +100,7 @@ export function InboxSection({ todos, plans, onAssign, heading = '미분류' }: 
 
             {plans.length > 0 && (
               <div className="flex flex-col gap-2">
-                <p className="text-xs text-muted">아래 계획으로 끌어다 놓으면 연결됩니다.</p>
+                <p className="t-caption-sm text-muted">아래 계획으로 끌어다 놓으면 연결됩니다.</p>
                 <div className="flex flex-wrap gap-2">
                   {plans.map((plan) => (
                     <PlanDropTarget key={plan.id} plan={plan} />
@@ -115,8 +115,8 @@ export function InboxSection({ todos, plans, onAssign, heading = '미분류' }: 
       {todos.length > 0 && plans.length > 0 && (
         <div className="flex flex-col gap-2 border-t border-hairline pt-4">
           {todos.map((todo) => (
-            <label key={todo.id} className="flex items-center gap-2 text-xs">
-              <span className="min-w-32 truncate text-sm text-body">{todo.title}</span>
+            <label key={todo.id} className="flex items-center gap-2 t-caption-sm">
+              <span className="min-w-32 truncate t-body-sm text-body">{todo.title}</span>
               <select
                 aria-label={`${todo.title} 을 연결할 주간 계획`}
                 data-testid={`inbox-assign-${todo.id}`}
@@ -124,7 +124,7 @@ export function InboxSection({ todos, plans, onAssign, heading = '미분류' }: 
                 onChange={(event) => {
                   if (event.target.value !== '') onAssign(todo.id, event.target.value)
                 }}
-                className="field min-h-0 w-auto px-2 py-1.5 text-xs"
+                className="field min-h-0 w-auto px-2 py-1.5 t-caption-sm"
               >
                 <option value="">연결할 계획 선택</option>
                 {plans.map((plan) => (

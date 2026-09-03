@@ -11,14 +11,14 @@ export default async function LoginPage({
     <div className="flex min-h-screen items-center justify-center bg-canvas p-6">
       <div className="card-liftable flex w-full max-w-sm flex-col gap-6 p-8 shadow-float">
         <header className="flex flex-col gap-2 mb-4">
-          <h1 className="text-xl font-semibold tracking-tight text-ink">목표 연동 칸반 투두</h1>
-          <p className="t-body text-muted">
+          <h1 className="t-display-sm text-ink">목표 연동 칸반 투두</h1>
+          <p className="t-body-md text-muted">
             1년 목표 · 주간 계획 · 할일을 하나로 잇습니다. 계속하려면 GitHub 로 로그인하세요.
           </p>
         </header>
 
         {error && (
-          <p role="alert" data-testid="login-error" className="rounded-control bg-danger-soft px-3 py-2 text-sm text-danger">
+          <p role="alert" data-testid="login-error" className="rounded-control bg-danger-soft px-3 py-2 t-body-sm text-danger">
             {error}
           </p>
         )}
@@ -39,7 +39,7 @@ export default async function LoginPage({
           GitHub 로 로그인
         </a>
 
-        <p className="text-xs leading-relaxed text-muted">
+        <p className="t-body-sm text-muted">
           처음이라면 <code className="rounded bg-surface-strong px-1 text-body">docs/LOGIN-SETUP.md</code> 를 보고
           GitHub OAuth App 을 먼저 만드세요.
         </p>

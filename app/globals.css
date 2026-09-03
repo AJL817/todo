@@ -1,22 +1,20 @@
 @import "tailwindcss";
 
 /*
- * 디자인 토큰.
+ * 디자인 토큰 — 참고 문서를 그대로 옮긴 것.
  *
- * Airbnb 의 형태 언어를 가져오되 강조색만 인디고로 바꿨다.
- *  - 강조색은 하나다. 화면의 90% 는 캔버스 + 잉크이고 인디고는 한두 군데에서만 터진다
- *  - 그림자 단계는 하나뿐이다. 깊이는 그림자를 쌓아서가 아니라 헤어라인과 면 분리로 만든다
- *  - 디스플레이 웨이트를 낮게 잡는다. 제목을 키우는 대신 여백으로 위계를 만든다
+ * 값은 문서에 적힌 것을 쓴다. 여기서 임의로 조정하기 시작하면 벤치마크가 아니라
+ * "비슷해 보이는 것" 이 된다. 실제로 한 번 그렇게 됐다 — 색 몇 개와 활자 여섯 개만
+ * 옮겨 놓고 적용했다고 했다가 되돌아왔다.
  *
- * 참고 문서와 다르게 간 것 두 가지:
- *  1. 다크 모드를 넣는다 (문서는 "Airbnb 웹에 다크 모드가 없다" 고 하지만 요구사항이 우선)
- *  2. Airbnb Cereal 은 라이선스 폰트라 문서가 지목한 대체재 Inter 를 쓴다
- *
- * 색은 반드시 여기 이름으로 쓴다. 컴포넌트에 slate-700 같은 숫자 팔레트를 직접 쓰면
- * 다크 모드가 그 자리에서만 깨진다. 이름을 쓰면 아래 두 블록이 알아서 갈아 끼운다.
+ * 문서에 없어서 직접 정한 값은 아래 세 부류뿐이고, 각각 이유를 적어 뒀다.
+ *  1. 다크 모드 (문서: "Airbnb 는 다크 모드가 없다" — 요구사항이 우선)
+ *  2. 강조색의 연한 틴트와 글자용 변형 (문서에 없지만 배지·활성 메뉴에 필요)
+ *  3. Inter (Airbnb Cereal 은 라이선스 폰트. 문서가 지목한 대체재)
  */
 
 @theme inline {
+  /* 문서: Cereal -> Circular -> 시스템. Cereal/Circular 를 쓸 수 없어 Inter 로 간다 */
   --font-sans: var(--font-inter), ui-sans-serif, system-ui, "Apple SD Gothic Neo",
     "Malgun Gothic", sans-serif;
 
@@ -45,9 +43,19 @@
   --color-danger: var(--danger);
   --color-danger-soft: var(--danger-soft);
 
-  /* 모서리. 컨트롤은 8px, 카드는 14px. 그 사이 값은 쓰지 않는다 */
+  /* 문서 rounded: sm 8 / md 14 / full. 그 사이 값은 쓰지 않는다.
+     xl(32px, 카테고리 스트립)은 이 앱에 그 표면이 없어 두지 않는다 */
   --radius-control: 8px;
   --radius-card: 14px;
+
+  /*
+   * 문서 spacing(2/4/8/12/16/24/32/48/64)은 토큰으로 노출하지 않는다.
+   *
+   * --spacing-sm 같은 이름은 Tailwind 의 티셔츠 사이즈와 충돌한다. max-w-sm 이
+   * 24rem 이 아니라 8px 로 해석돼 로그인 카드가 8px 로 찌그러졌다.
+   * Tailwind 기본 스케일이 이미 같은 픽셀을 낸다 (0.5=2 · 1=4 · 2=8 · 3=12 ·
+   * 4=16 · 6=24 · 8=32 · 12=48 · 16=64). 두 이름을 두면 충돌하거나 흔들린다.
+   */
 
   /* 시스템 전체에 그림자는 이것 하나뿐이다 */
   --shadow-float: var(--shadow-float-value);
@@ -56,42 +64,56 @@
 :root {
   color-scheme: light;
 
+  /* --- Surface (문서 값 그대로) --- */
   --canvas: #ffffff;
   --surface: #ffffff;
   --surface-soft: #f7f7f7;
   --surface-strong: #f2f2f2;
 
+  /* --- Text (문서 값 그대로) --- */
   --ink: #222222;
   --body: #3f3f3f;
   --muted: #6a6a6a;
-  --muted-soft: #8b8b8b;
+  --muted-soft: #929292;
 
+  /* --- Hairlines (문서 값 그대로) --- */
   --hairline: #dddddd;
-  /* 길게 이어지는 목록의 행 구분선. 카드 테두리보다 한 단계 옅다 */
   --hairline-soft: #ebebeb;
   --border-strong: #c1c1c1;
 
-  --primary: #4f46e5;
-  --primary-hover: #4338ca;
-  --primary-soft: #eef2ff;
-  --primary-accent: #4338ca;
+  /* --- Brand: Rausch (문서 값 그대로) ---
+     흰 글자 대비가 3.52:1 로 WCAG AA(4.5) 에 못 미친다. 이건 원본 시스템의
+     성질이지 옮기다 생긴 실수가 아니다. 문서 충실도를 택했다. */
+  --primary: #ff385c;
+  --primary-active: #e00b41;
+  --primary-disabled: #ffd1da;
   --on-primary: #ffffff;
 
-  /* 문서의 Luxe 축. 원문은 Luxe 화면에서만 쓰지만, 이 앱에는 사진이 없어
-     흰 화면에 색이 들어올 자리가 없다. 이월이라는 서브 상태 하나에만 빌려 쓴다.
-     여기서 더 늘리면 "강조색은 하나" 라는 이 시스템의 첫 번째 특징이 무너진다. */
+  /* 문서에 없어 직접 정한 둘.
+     soft: 배지와 활성 메뉴에 깔 연한 브랜드 틴트가 필요하다.
+     accent: 흰 바탕 위 "글자" 로 쓰는 강조색. #ff385c 는 3.52:1 이라 글자로는
+             읽히지 않으므로 같은 색상각을 어둡게 내린 값을 따로 둔다 (6.15:1). */
+  --primary-soft: #fff0f3;
+  --primary-accent: #c1103f;
+
+  /* --- 서브브랜드 (문서: Luxe 화면에서만) --- */
   --luxe: #460479;
   --luxe-soft: #f3ecf9;
 
+  /* --- Semantic (문서 값 그대로) --- */
   --danger: #c13515;
   --danger-soft: #fdeeea;
 
+  /* 문서의 단일 그림자 정의 그대로 */
   --shadow-float-value: rgba(0, 0, 0, 0.02) 0 0 0 1px, rgba(0, 0, 0, 0.04) 0 2px 6px 0,
     rgba(0, 0, 0, 0.1) 0 4px 8px 0;
 }
 
 /*
- * 다크 값. 두 번 쓰는 이유는 갈래가 둘이기 때문이다.
+ * 다크 값. 문서에 없는 영역이라 원칙만 정했다 —
+ * 색상각은 그대로 두고 명도만 뒤집는다. Rausch 는 어두운 바탕에서도 Rausch 여야 한다.
+ *
+ * 두 번 쓰는 이유는 갈래가 둘이기 때문이다.
  *  - data-theme 이 없으면 시스템 설정을 따른다 (단, light 를 고른 사람은 제외)
  *  - data-theme="dark" 는 시스템 설정과 무관하게 강제한다
  */
@@ -113,23 +135,21 @@
     --hairline-soft: #22252c;
     --border-strong: #3d434f;
 
-    /* 어두운 바탕에서는 #4f46e5 가 가라앉는다. 채움은 한 단계 밝히고,
-       글자로 쓰는 강조색은 더 밝은 값을 따로 둔다.
-       #6366f1 은 흰 글자 대비가 4.47:1 로 AA(4.5) 에 아슬하게 못 미쳐 한 단계 낮췄다 */
-    --primary: #5d5fef;
-    --primary-hover: #818cf8;
-    --primary-soft: #232445;
-    --primary-accent: #a5b4fc;
+    --primary: #ff385c;
+    --primary-active: #ff6b85;
+    --primary-disabled: #4a2029;
     --on-primary: #ffffff;
+    --primary-soft: #331a20;
+    /* 어두운 바탕에서는 반대로 밝혀야 글자가 읽힌다 (7.4:1) */
+    --primary-accent: #ff8fa3;
 
-    /* 어두운 바탕에서는 원문 값이 전부 가라앉는다. 같은 색상각을 밝게 올린다 */
     --luxe: #c4a6e8;
     --luxe-soft: #241a33;
 
     --danger: #f2755a;
     --danger-soft: #2e1a16;
 
-    /* 어두운 면에서는 그림자가 보이지 않는다. 대신 밝은 테두리로 띄운다 */
+    /* 어두운 면에서는 그림자가 보이지 않는다. 밝은 테두리가 그 역할을 한다 */
     --shadow-float-value: rgba(255, 255, 255, 0.06) 0 0 0 1px, rgba(0, 0, 0, 0.5) 0 4px 12px 0;
   }
 }
@@ -151,11 +171,12 @@
   --hairline-soft: #22252c;
   --border-strong: #3d434f;
 
-  --primary: #5d5fef;
-  --primary-hover: #818cf8;
-  --primary-soft: #232445;
-  --primary-accent: #a5b4fc;
+  --primary: #ff385c;
+  --primary-active: #ff6b85;
+  --primary-disabled: #4a2029;
   --on-primary: #ffffff;
+  --primary-soft: #331a20;
+  --primary-accent: #ff8fa3;
 
   --luxe: #c4a6e8;
   --luxe-soft: #241a33;
@@ -172,66 +193,113 @@ body {
 }
 
 /*
- * 활자 스케일. 문서의 typography 토큰을 그대로 옮겼다.
+ * 활자 — 문서 typography 표를 크기·굵기·행간·자간까지 그대로.
  *
- * 앞선 시도에서 색만 토큰화하고 크기는 예전(본문 14px)을 그대로 뒀더니
- * 화면이 바뀐 티가 나지 않았다. 이 시스템에서 "generous" 를 만드는 것은
- * 색이 아니라 본문 16px 과 섹션 사이 64px 이다.
+ * 화면 코드에 text-[15px] 같은 임의 크기를 적으면 화면마다 위계가 어긋난다.
+ * 반드시 여기서 골라 쓴다.
+ *
+ * **utilities 레이어여야 한다.** components 에 두면 .field / .btn-sm 이 선언한
+ * font-size 와 명시도가 같아지고, 소스 순서상 뒤에 오는 프리미티브가 이긴다.
+ * 실제로 그렇게 해서 `field t-caption-sm` 이 13px 이 아니라 16px 로 렌더됐다.
+ * 화면 코드는 토큰을 쓰는 것처럼 보이는데 픽셀은 토큰이 정하지 않는 상태였다.
  */
-@layer components {
-  /* display-xl — 페이지 제목 */
-  .t-display {
-    font-size: 1.75rem;
+@layer utilities {
+  .t-rating {
+    font-size: 4rem;
     font-weight: 700;
-    line-height: 1.25;
-    letter-spacing: -0.01em;
+    line-height: 1.1;
+    letter-spacing: -1px;
   }
 
-  /* display-sm — 섹션 제목 */
-  .t-section {
+  .t-display-xl {
+    font-size: 1.75rem;
+    font-weight: 700;
+    line-height: 1.43;
+  }
+
+  .t-display-lg {
+    font-size: 1.375rem;
+    font-weight: 500;
+    line-height: 1.18;
+    letter-spacing: -0.44px;
+  }
+
+  .t-display-sm {
     font-size: 1.25rem;
     font-weight: 600;
     line-height: 1.2;
     letter-spacing: -0.18px;
   }
 
-  /* title-md — 카드 제목 */
-  .t-title {
+  .t-title-md {
     font-size: 1rem;
     font-weight: 600;
     line-height: 1.25;
   }
 
-  /* body-md — 기본 running text */
-  .t-body {
+  .t-title-sm {
+    font-size: 1rem;
+    font-weight: 500;
+    line-height: 1.25;
+  }
+
+  .t-body-md {
     font-size: 1rem;
     font-weight: 400;
     line-height: 1.5;
   }
 
-  /* body-sm — 카드 메타, 날짜, 건수 */
-  .t-meta {
+  .t-body-sm {
     font-size: 0.875rem;
     font-weight: 400;
     line-height: 1.43;
   }
+
+  .t-caption {
+    font-size: 0.875rem;
+    font-weight: 500;
+    line-height: 1.29;
+  }
+
+  .t-caption-sm {
+    font-size: 0.8125rem;
+    font-weight: 400;
+    line-height: 1.23;
+  }
+
+  .t-micro-label {
+    font-size: 0.75rem;
+    font-weight: 700;
+    line-height: 1.33;
+  }
+
+  .t-link {
+    font-size: 0.875rem;
+    font-weight: 400;
+    line-height: 1.43;
+  }
+
+  .t-nav-link {
+    font-size: 1rem;
+    font-weight: 600;
+    line-height: 1.25;
+  }
 }
 
 /*
- * 프리미티브.
+ * 프리미티브 — 문서 Components 절의 치수 그대로.
  *
- * 버튼과 입력을 페이지마다 다시 조합하면 반경과 높이가 조금씩 어긋난다.
- * 여기 한 곳에서만 정의하고 컴포넌트는 클래스 이름만 붙인다.
+ * 버튼과 입력을 페이지마다 다시 조합하면 높이와 반경이 조금씩 어긋난다.
  */
 @layer components {
+  /* button-primary: 48px 높이, 14x24 패딩, 8px 반경, 16px/500 라벨 */
   .btn {
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    gap: 0.5rem;
-    /* 문서의 button-primary: 48px 높이, 24px 좌우 패딩, 16px 라벨 */
+    gap: 8px;
     min-height: 3rem;
-    padding: 0 1.5rem;
+    padding: 0 24px;
     border-radius: var(--radius-control);
     font-size: 1rem;
     font-weight: 500;
@@ -245,10 +313,12 @@ body {
     outline-offset: 2px;
   }
 
+  /* button-sm: 14px/500, 카테고리 스트립의 알약 라벨 치수 */
   .btn-sm {
     min-height: 2.25rem;
     padding: 0 0.875rem;
     font-size: 0.875rem;
+    line-height: 1.29;
   }
 
   .btn-primary {
@@ -256,10 +326,13 @@ body {
     color: var(--on-primary);
   }
 
-  .btn-primary:hover:not(:disabled) {
-    background: var(--primary-hover);
+  /* 문서: 누름 상태는 배경만 바뀐다. transform 도 그림자 변화도 없다 */
+  .btn-primary:hover:not(:disabled),
+  .btn-primary:active:not(:disabled) {
+    background: var(--primary-active);
   }
 
+  /* 문서: 흰 채움 + 잉크 글자 + 1px 잉크 외곽선 */
   .btn-secondary {
     background: var(--surface);
     color: var(--ink);
@@ -270,29 +343,43 @@ body {
     border-color: var(--ink);
   }
 
+  /* button-tertiary-text: 면도 테두리도 없고 hover 에 밑줄만 */
   .btn-ghost {
     background: transparent;
     color: var(--muted);
-    padding: 0 0.5rem;
+    padding: 0 8px;
     min-height: 2.25rem;
   }
 
   .btn-ghost:hover:not(:disabled) {
-    background: var(--surface-soft);
     color: var(--ink);
+    text-decoration: underline;
+  }
+
+  /*
+   * 문서: 비활성 CTA 는 연한 브랜드 틴트에 흰 글자다.
+   * 투명도를 깎으면 브랜드 색이 회색으로 죽어 다른 시스템처럼 보인다.
+   */
+  .btn-primary:disabled {
+    background: var(--primary-disabled);
+    color: var(--on-primary);
   }
 
   .btn:disabled {
-    /* 눌리지 않는다는 것이 색으로도 커서로도 보여야 한다 */
-    opacity: 0.45;
     cursor: not-allowed;
   }
 
+  .btn-secondary:disabled,
+  .btn-ghost:disabled {
+    color: var(--muted-soft);
+    border-color: var(--border-strong);
+  }
+
+  /* text-input: 56px 높이, 14x12 패딩, 8px 반경, 본문 16px */
   .field {
     width: 100%;
-    /* 문서의 text-input: 56px 높이, 14x12 패딩, 본문 16px */
     min-height: 3.5rem;
-    padding: 0.875rem 0.875rem;
+    padding: 0.875rem 12px;
     border-radius: var(--radius-control);
     border: 1px solid var(--hairline);
     background: var(--surface);
@@ -305,10 +392,14 @@ body {
     color: var(--muted-soft);
   }
 
+  /*
+   * 문서: 포커스에서 테두리가 2px 로 두꺼워지고 색이 잉크로 바뀐다.
+   * 글로우도 링도 없다. 두께가 변하면 레이아웃이 밀리므로 inset 그림자로 그린다.
+   */
   .field:focus {
-    /* 링이나 글로우 없이 테두리 색만 바꾼다 */
     outline: none;
-    border-color: var(--primary);
+    border-color: var(--ink);
+    box-shadow: inset 0 0 0 1px var(--ink);
   }
 
   .field:disabled {
@@ -318,21 +409,14 @@ body {
   }
 
   /*
-   * 카드는 테두리를 두르지 않는다.
+   * 문서의 표면 규칙: 화면의 95% 는 그림자도 테두리도 없는 흰 바탕이다.
+   * 깊이는 그림자를 쌓아서가 아니라 면 분리와 모서리 클리핑으로 만든다.
    *
-   * 원문 시스템은 화면의 95%가 그림자도 테두리도 없는 흰 바탕이고, 깊이는
-   * 사진과 모서리 클리핑으로 만든다. 모든 영역을 1px 박스에 담으면 색과
-   * 크기를 아무리 맞춰도 평범한 대시보드로 보인다 — 실제로 그렇게 됐었다.
-   *
-   * 그래서 구획은 여백과 제목으로 하고, 그림자는 집을 수 있는 것에만
-   * hover 로 준다.
+   * 그래서 "테두리 없는 묶음" 을 위한 클래스는 두지 않는다 — 아무 클래스도 안 붙이면
+   * 그게 곧 그 상태다. 실제로 .card 를 만들어 뒀더니 아무도 쓰지 않았다.
    */
-  .card {
-    border-radius: var(--radius-card);
-    background: transparent;
-  }
 
-  /* 끌거나 눌러서 다룰 수 있는 카드. 원문의 property-card hover 처리다 */
+  /* property-card 의 hover 처리. 집을 수 있는 것에만 준다 */
   .card-liftable {
     border-radius: var(--radius-card);
     background: var(--surface);
@@ -343,34 +427,27 @@ body {
     box-shadow: var(--shadow-float);
   }
 
-  /*
-   * 바탕을 살짝 눌러 담는 영역. 칸반 열이나 미리보기처럼 "여기에 놓는다" 는
-   * 뜻을 줘야 하는 곳에만 쓴다. 원문의 surface-soft 용법이다.
-   */
+  /* surface-soft 용법: 눌러 담는 영역 (칸반 열, 미리보기 밴드) */
   .well {
     border-radius: var(--radius-card);
     background: var(--surface-soft);
   }
 
-  /* 목록의 행 구분선. 박스 대신 이걸로 나눈다 */
+  /* 긴 목록의 행 구분선 (문서: hairline-soft) */
   .rule {
     border-top: 1px solid var(--hairline-soft);
   }
 
-  .badge-luxe {
-    background: var(--luxe-soft);
-    color: var(--luxe);
-  }
-
+  /* guest-favorite-badge: 알약, 11px/600 */
   .badge {
     display: inline-flex;
     align-items: center;
-    gap: 0.25rem;
-    padding: 0.125rem 0.5rem;
+    gap: 4px;
+    padding: 2px 8px;
     border-radius: 9999px;
     font-size: 0.6875rem;
     font-weight: 600;
-    line-height: 1.4;
+    line-height: 1.18;
     white-space: nowrap;
   }
 
@@ -382,6 +459,11 @@ body {
   .badge-primary {
     background: var(--primary-soft);
     color: var(--primary-accent);
+  }
+
+  .badge-luxe {
+    background: var(--luxe-soft);
+    color: var(--luxe);
   }
 
   .badge-danger {

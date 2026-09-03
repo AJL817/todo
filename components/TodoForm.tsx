@@ -71,7 +71,7 @@ export function TodoForm({ onCreate, plans = [], defaultPlanId = null, pending =
             className="field"
           />
           {error && (
-            <p role="alert" data-testid="todo-title-error" className="text-xs text-danger">
+            <p role="alert" data-testid="todo-title-error" className="t-caption-sm text-danger">
               {error}
             </p>
           )}
@@ -120,18 +120,18 @@ export function TodoForm({ onCreate, plans = [], defaultPlanId = null, pending =
           className="well p-5"
         >
           {selectedPlan.isPending ? (
-            <p className="text-xs text-muted">연결할 계획을 불러오는 중…</p>
+            <p className="t-caption-sm text-muted">연결할 계획을 불러오는 중…</p>
           ) : selectedPlan.isError || !linked ? (
-            <p role="alert" className="text-xs text-danger">
+            <p role="alert" className="t-caption-sm text-danger">
               계획 정보를 불러오지 못했습니다.
             </p>
           ) : (
             <>
               <header className="flex flex-wrap items-baseline gap-2">
-                <span className="text-sm font-semibold text-ink" data-testid="linked-plan-title">
+                <span className="t-title-sm text-ink" data-testid="linked-plan-title">
                   {linked.plan.title}
                 </span>
-                <span className="text-xs text-muted">{formatKstDate(linked.plan.weekStart)} 주</span>
+                <span className="t-caption-sm text-muted">{formatKstDate(linked.plan.weekStart)} 주</span>
                 <span
                   data-testid="linked-plan-progress"
                   className="badge badge-primary"
@@ -141,7 +141,7 @@ export function TodoForm({ onCreate, plans = [], defaultPlanId = null, pending =
               </header>
 
               {linked.todos.length === 0 ? (
-                <p data-testid="linked-plan-empty" className="mt-3 text-xs text-muted">
+                <p data-testid="linked-plan-empty" className="mt-3 t-caption-sm text-muted">
                   이 계획에는 아직 할일이 없습니다. 추가하면 첫 번째가 됩니다.
                 </p>
               ) : (
@@ -151,7 +151,7 @@ export function TodoForm({ onCreate, plans = [], defaultPlanId = null, pending =
                       key={todo.id}
                       data-testid={`linked-todo-${todo.id}`}
                       data-title={todo.title}
-                      className="flex items-center gap-2 text-sm"
+                      className="flex items-center gap-2 t-body-sm"
                     >
                       <span
                         className={`badge ${todo.status === 'done' ? 'badge-primary' : 'badge-neutral'}`}
@@ -159,7 +159,7 @@ export function TodoForm({ onCreate, plans = [], defaultPlanId = null, pending =
                         {STATUS_LABELS[todo.status]}
                       </span>
                       <span className={todo.status === 'done' ? 'text-muted line-through' : 'text-body'}>{todo.title}</span>
-                      {todo.dueDate && <span className="text-xs text-muted-soft">{formatKstDate(todo.dueDate)}</span>}
+                      {todo.dueDate && <span className="t-caption-sm text-muted-soft">{formatKstDate(todo.dueDate)}</span>}
                     </li>
                   ))}
                 </ul>

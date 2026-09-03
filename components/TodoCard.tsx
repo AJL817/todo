@@ -53,7 +53,7 @@ export function TodoCard({ todo, onRename, onDelete, onQuickMove }: TodoCardProp
           type="button"
           aria-label={`${todo.title} 카드 이동 손잡이`}
           data-testid={`handle-${todo.id}`}
-          className="mt-0.5 cursor-grab touch-none px-1 text-xs text-muted-soft hover:text-ink"
+          className="mt-0.5 cursor-grab touch-none px-1 t-caption-sm text-muted-soft hover:text-ink"
           {...attributes}
           {...listeners}
         >
@@ -75,14 +75,14 @@ export function TodoCard({ todo, onRename, onDelete, onQuickMove }: TodoCardProp
                 setEditing(false)
               }
             }}
-            className="field min-h-0 px-2 py-1 text-sm"
+            className="field min-h-0 px-2 py-1 t-body-sm"
           />
         ) : (
           <button
             type="button"
             onClick={() => setEditing(true)}
             data-testid={`title-${todo.id}`}
-            className="flex-1 text-left text-[15px] font-medium leading-snug text-ink"
+            className="flex-1 text-left t-title-sm text-ink"
           >
             {todo.title}
           </button>
@@ -93,7 +93,7 @@ export function TodoCard({ todo, onRename, onDelete, onQuickMove }: TodoCardProp
           aria-label={`${todo.title} 삭제`}
           data-testid={`delete-${todo.id}`}
           onClick={() => onDelete(todo.id)}
-          className="px-1 text-xs text-muted-soft hover:text-danger"
+          className="px-1 t-caption-sm text-muted-soft hover:text-danger"
         >
           ✕
         </button>
@@ -148,7 +148,7 @@ export function TodoCard({ todo, onRename, onDelete, onQuickMove }: TodoCardProp
             aria-label={`${todo.title} 이전 상태로`}
             disabled={todo.status === 'todo'}
             onClick={() => onQuickMove(todo.id, -1)}
-            className="flex size-7 items-center justify-center rounded-control border border-hairline text-xs text-body transition-colors hover:border-ink disabled:cursor-not-allowed disabled:opacity-30"
+            className="flex size-7 items-center justify-center rounded-control border border-hairline t-caption-sm text-body transition-colors hover:border-ink disabled:cursor-not-allowed disabled:opacity-30"
           >
             ←
           </button>
@@ -158,7 +158,7 @@ export function TodoCard({ todo, onRename, onDelete, onQuickMove }: TodoCardProp
             aria-label={`${todo.title} 다음 상태로`}
             disabled={todo.status === 'done'}
             onClick={() => onQuickMove(todo.id, 1)}
-            className="flex size-7 items-center justify-center rounded-control border border-hairline text-xs text-body transition-colors hover:border-ink disabled:cursor-not-allowed disabled:opacity-30"
+            className="flex size-7 items-center justify-center rounded-control border border-hairline t-caption-sm text-body transition-colors hover:border-ink disabled:cursor-not-allowed disabled:opacity-30"
           >
             →
           </button>

@@ -27,17 +27,17 @@ export function GoalCard({ goal, progress, onDelete }: GoalCardProps) {
     >
       <header className="flex items-start justify-between gap-2">
         <div className="flex flex-col">
-          <Link href={`/goals/${goal.id}`} data-testid={`goal-link-${goal.id}`} className="t-title text-ink hover:text-primary-accent">
+          <Link href={`/goals/${goal.id}`} data-testid={`goal-link-${goal.id}`} className="t-title-md text-ink hover:text-primary-accent">
             {goal.title}
           </Link>
-          <span className="mt-0.5 text-xs text-muted">{goal.year}년</span>
+          <span className="mt-0.5 t-caption-sm text-muted">{goal.year}년</span>
         </div>
         <button
           type="button"
           aria-label={`${goal.title} 삭제`}
           data-testid={`goal-delete-${goal.id}`}
           onClick={() => onDelete(goal.id)}
-          className="btn btn-ghost btn-sm text-xs"
+          className="btn btn-ghost btn-sm"
         >
           삭제
         </button>
@@ -45,11 +45,11 @@ export function GoalCard({ goal, progress, onDelete }: GoalCardProps) {
 
       <ProgressBar percent={progress.percent} testId={`goal-bar-${goal.id}`} />
 
-      <p data-testid={`goal-progress-${goal.id}`} className="text-xs font-medium text-body">
+      <p data-testid={`goal-progress-${goal.id}`} className="t-caption text-body">
         {goalProgressText(progress)}
       </p>
 
-      {goal.description && <p className="text-xs leading-relaxed text-muted">{goal.description}</p>}
+      {goal.description && <p className="t-body-sm text-muted">{goal.description}</p>}
     </article>
   )
 }

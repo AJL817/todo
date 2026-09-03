@@ -26,14 +26,14 @@ export default function InboxPage() {
   return (
     <div className="flex flex-col gap-12">
       <header className="flex flex-col gap-1.5 mb-4">
-        <h1 className="t-display text-ink">미분류</h1>
-        <p className="t-body text-muted">
+        <h1 className="t-display-xl text-ink">미분류</h1>
+        <p className="t-body-md text-muted">
           주간 계획에 연결되지 않은 할일입니다. 어떤 진행률에도 반영되지 않으므로 이번 주 계획에 붙여 주세요.
         </p>
       </header>
 
       {inboxQuery.isPending ? (
-        <p data-testid="inbox-loading" className="t-body text-muted">
+        <p data-testid="inbox-loading" className="t-body-md text-muted">
           불러오는 중…
         </p>
       ) : (

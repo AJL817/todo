@@ -53,7 +53,7 @@ export function ThemeToggle() {
             title={option.title}
             data-testid={`theme-${option.value}`}
             onClick={() => choose(option.value)}
-            className={`flex-1 rounded-[6px] px-2 py-1 text-[11px] font-medium transition-colors ${
+            className={`flex-1 rounded-[6px] px-2 py-1 t-micro-label transition-colors ${
               selected ? 'bg-primary text-on-primary' : 'text-muted hover:text-ink'
             }`}
           >

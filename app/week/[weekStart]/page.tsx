@@ -55,15 +55,15 @@ export default function WeekPage({ params }: { params: Promise<{ weekStart: stri
   return (
     <div className="flex flex-col gap-12">
       <header className="flex flex-col gap-3 mb-4">
-        <h1 className="t-display text-ink">주간 뷰</h1>
+        <h1 className="t-display-xl text-ink">주간 뷰</h1>
         <WeekNavigator weekStart={weekStart} />
-        <p className="t-body text-muted">
+        <p className="t-body-md text-muted">
           이 주 계획에 <strong>소속된</strong> 할일을 모읍니다. 마감일 기준이 아니므로 마감일이 없는 할일도 보입니다.
         </p>
       </header>
 
       <section className="flex flex-col gap-3">
-        <h2 className="t-section text-ink">주간 계획</h2>
+        <h2 className="t-display-sm text-ink">주간 계획</h2>
 
         <form
           data-testid="plan-form"
@@ -94,7 +94,7 @@ export default function WeekPage({ params }: { params: Promise<{ weekStart: stri
         </form>
 
         {plans.length === 0 ? (
-          <p data-testid="plan-empty" className="t-body text-muted">
+          <p data-testid="plan-empty" className="t-body-md text-muted">
             이 주에는 계획이 없습니다.
           </p>
         ) : (
@@ -115,7 +115,7 @@ export default function WeekPage({ params }: { params: Promise<{ weekStart: stri
       </section>
 
       <section className="flex flex-col gap-3">
-        <h2 className="t-section text-ink">이 주의 할일</h2>
+        <h2 className="t-display-sm text-ink">이 주의 할일</h2>
 
         <TodoForm
           onCreate={(payload) => createTodo.mutate(payload)}
@@ -127,7 +127,7 @@ export default function WeekPage({ params }: { params: Promise<{ weekStart: stri
         />
 
         {weekQuery.isPending ? (
-          <p data-testid="week-loading" className="t-body text-muted">
+          <p data-testid="week-loading" className="t-body-md text-muted">
             불러오는 중…
           </p>
         ) : (
@@ -146,12 +146,12 @@ export default function WeekPage({ params }: { params: Promise<{ weekStart: stri
           className="flex flex-col gap-4"
         >
           <header className="flex items-baseline gap-2">
-            <h2 className="t-section text-ink">이 주에서 이월돼 나간 할일</h2>
-            <span data-testid="carried-out-count" className="text-xs text-muted">
+            <h2 className="t-display-sm text-ink">이 주에서 이월돼 나간 할일</h2>
+            <span data-testid="carried-out-count" className="t-caption-sm text-muted">
               {carriedOut.length}건
             </span>
           </header>
-          <p className="text-xs text-muted">
+          <p className="t-caption-sm text-muted">
             다음 주로 옮겨졌지만 <strong>이 주의 진행률 분모에는 그대로 남습니다.</strong> 그 주 안에 끝내지 못했다는
             사실은 나중에 완료해도 바뀌지 않기 때문입니다.
           </p>
@@ -161,7 +161,7 @@ export default function WeekPage({ params }: { params: Promise<{ weekStart: stri
                 key={todo.id}
                 data-testid={`carried-out-${todo.id}`}
                 data-title={todo.title}
-                className="inline-flex items-center gap-1.5 rounded-full border border-hairline px-3.5 py-1.5 text-sm text-muted"
+                className="inline-flex items-center gap-1.5 rounded-full border border-hairline px-3.5 py-1.5 t-body-sm text-muted"
               >
                 {todo.title}
                 <span className="badge badge-luxe">
