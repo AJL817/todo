@@ -47,8 +47,8 @@ function Column({
       ref={setNodeRef}
       data-testid={`column-${status}`}
       data-count={todos.length}
-      className={`flex min-h-64 flex-1 flex-col gap-2 rounded-card border p-3 transition-colors ${
-        isOver ? 'border-primary bg-primary-soft' : 'border-hairline bg-surface-soft'
+      className={`well flex min-h-64 flex-1 flex-col gap-2 p-3 transition-colors ${
+        isOver ? 'bg-primary-soft' : ''
       }`}
     >
       <header className="flex items-center justify-between px-1 pb-1">

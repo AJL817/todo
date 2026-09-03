@@ -33,7 +33,7 @@ function Panel({
   return (
     <section
       data-testid={testId}
-      className="card flex flex-col gap-4 p-6"
+      className="flex flex-col gap-4"
     >
       <header className="flex flex-wrap items-baseline justify-between gap-2">
         <h2 className="t-section text-ink">{title}</h2>
@@ -86,8 +86,8 @@ export default function DashboardPage() {
     plans.find((plan) => plan.id === todo.weeklyPlanId)?.title ?? '미분류'
 
   return (
-    <div className="flex flex-col gap-16">
-      <header className="flex flex-col gap-1.5">
+    <div className="flex flex-col gap-12">
+      <header className="flex flex-col gap-1.5 mb-4">
         <h1 className="t-display text-ink">대시보드</h1>
         <p className="t-body text-muted">
           {today} · 오늘 처리할 일과 그것이 이번 주와 올해 목표에 얼마나 기여하는지 함께 봅니다.
@@ -116,7 +116,7 @@ export default function DashboardPage() {
                 key={todo.id}
                 data-testid={`today-${todo.id}`}
                 data-title={todo.title}
-                className="flex flex-wrap items-center gap-2 rounded-control border border-hairline px-3 py-2.5"
+                className="rule flex flex-wrap items-center gap-3 py-3 first:border-t-0"
               >
                 <span className={`badge ${STATUS_STYLE[todo.status]}`}>
                   {STATUS_LABELS[todo.status]}
@@ -153,7 +153,7 @@ export default function DashboardPage() {
         )}
       </Panel>
 
-      <div className="grid gap-4 lg:grid-cols-2">
+      <div className="grid items-start gap-4 lg:grid-cols-2">
         <Panel
           testId="dashboard-week"
           title="이번 주"
@@ -223,7 +223,7 @@ export default function DashboardPage() {
         </Panel>
       </div>
 
-      <div className="grid gap-4 lg:grid-cols-2">
+      <div className="grid items-start gap-4 lg:grid-cols-2">
         <Panel
           testId="dashboard-inbox"
           title="미분류"

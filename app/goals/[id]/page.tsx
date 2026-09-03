@@ -38,8 +38,8 @@ export default function GoalDetailPage({ params }: { params: Promise<{ id: strin
   const { goal, progress, plans } = goalQuery.data
 
   return (
-    <div className="flex flex-col gap-16">
-      <header className="flex flex-col gap-2">
+    <div className="flex flex-col gap-12">
+      <header className="flex flex-col gap-2 mb-4">
         <Link href="/goals" data-testid="goal-back" className="text-xs text-muted underline hover:text-ink">
           ← 1년 목표 목록
         </Link>
@@ -52,7 +52,7 @@ export default function GoalDetailPage({ params }: { params: Promise<{ id: strin
         {goal.description && <p className="t-body text-muted">{goal.description}</p>}
       </header>
 
-      <section className="card flex flex-col gap-4 p-6">
+      <section className="flex flex-col gap-3">
         <ProgressBar percent={progress.percent} testId="goal-detail-bar" />
         <p data-testid="goal-detail-progress" className="text-sm font-semibold text-ink">
           {goalProgressText(progress)}
@@ -76,7 +76,7 @@ export default function GoalDetailPage({ params }: { params: Promise<{ id: strin
                 key={entry.plan.id}
                 data-testid={`goal-plan-${entry.plan.id}`}
                 data-title={entry.plan.title}
-                className="card flex flex-col gap-3 p-5"
+                className="rule flex flex-col gap-2.5 py-4 first:border-t-0"
               >
                 <div className="flex flex-wrap items-baseline justify-between gap-2">
                   <Link href={`/week/${formatKstDate(entry.plan.weekStart)}`} className="text-sm font-medium text-ink hover:text-primary-accent">

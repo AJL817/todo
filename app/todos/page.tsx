@@ -23,8 +23,8 @@ export default function BoardPage() {
   const remove = useDeleteTodo(boardScope)
 
   return (
-    <div className="flex flex-col gap-16">
-      <header className="flex flex-col gap-1.5">
+    <div className="flex flex-col gap-12">
+      <header className="flex flex-col gap-1.5 mb-4">
         <h1 className="t-display text-ink">전체 보드</h1>
         <p className="t-body text-muted">카드를 끌어 상태와 순서를 바꿉니다. 드롭 즉시 반영되고 실패하면 되돌아갑니다.</p>
       </header>

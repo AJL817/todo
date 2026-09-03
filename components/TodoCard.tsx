@@ -46,7 +46,7 @@ export function TodoCard({ todo, onRename, onDelete, onQuickMove }: TodoCardProp
       data-testid={`card-${todo.id}`}
       data-title={todo.title}
       data-status={todo.status}
-      className={`card p-3 transition-shadow hover:shadow-float ${isDragging ? 'opacity-50' : ''}`}
+      className={`card-liftable p-3.5 ${isDragging ? 'opacity-50' : ''}`}
     >
       <div className="flex items-start gap-2">
         <button
@@ -124,7 +124,7 @@ export function TodoCard({ todo, onRename, onDelete, onQuickMove }: TodoCardProp
           <span
             data-testid={`carried-${todo.id}`}
             title={`${carriedCount}번 이월된 할일입니다`}
-            className="badge badge-neutral"
+            className="badge badge-luxe"
           >
             이월 {carriedCount}
           </span>

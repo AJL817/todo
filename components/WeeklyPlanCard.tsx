@@ -27,7 +27,7 @@ export function WeeklyPlanCard({
     <article
       data-testid={`plan-${plan.id}`}
       data-title={plan.title}
-      className="card flex flex-col gap-4 p-6"
+      className="card-liftable flex flex-col gap-4 p-5"
     >
       <header className="flex items-start justify-between gap-2">
         <h3 className="t-title text-ink">{plan.title}</h3>

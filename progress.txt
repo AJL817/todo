@@ -57,3 +57,34 @@ tsc 0 · eslint 0 · vitest 347 · playwright 72 · build 0
 
 - 배포는 https://todo-jade-eta-35.vercel.app (Vercel Preview 환경에는 MONGODB_URI 미설정)
 - 중복 OAuth App(id 3832518) 미삭제 — 무해하지만 정리 대상
+
+---
+
+# 박스 없는 구성 (2차 디자인 패스)
+
+문서의 "화면의 95%는 그림자도 테두리도 없는 흰 바탕" 을 적용했다.
+색과 크기를 아무리 맞춰도 모든 영역을 1px 박스에 담으면 평범한 대시보드로 보인다.
+
+- `.card` 는 무테두리. 집을 수 있는 것만 `.card-liftable` 로 hover 때 뜬다
+- `.well` 은 "여기에 놓는다" 는 뜻이 필요한 곳에만 (칸반 열, 연결 계획 미리보기)
+- `.rule` 로 목록 행을 나눈다. 박스 대신 얇은 선
+- 문서에 있는데 빠뜨렸던 `hairline-soft #ebebeb` 복원, `surface-strong` 을 #f2f2f2 로 정정
+- Luxe(#460479)를 이월 배지 하나에만 사용. 그 이상 늘리면 "강조색은 하나" 가 무너진다
+- 사이드바 활성 표시는 왼쪽 2px 규칙 (문서의 product-tab-active)
+
+## E2E 가 원격 DB 를 쓰고 있었다 — 이 함정을 반복하지 말 것
+
+`playwright.config.ts` 는 "MONGODB_URI 를 비워 둔다" 고 주석만 달아 두고 실제로는
+비우지 않았다. `next dev` 가 `.env` 를 읽으므로, 개발용 `.env` 에 MONGODB_URI 가
+생긴 순간부터 **E2E 전체가 원격 Atlas 운영 DB 에 붙어 돌았다.**
+
+증상: 매 요청이 네트워크를 타면서 실행 시간이 두 배가 되고, 타임아웃이
+테스트마다 옮겨 다녔다. 드래그 헬퍼를 세 번 고쳤지만 원인이 아니었다.
+그 사이 Atlas 에 테스트 계정 7개와 문서 1889건이 쌓였고 나중에 지웠다.
+
+교훈: **환경 격리는 주석이 아니라 값으로 해야 한다.** process.env 가 .env 파일보다
+우선하므로 `MONGODB_URI: ''` 를 명시하면 로컬 폴백을 탄다.
+
+## 검증
+
+tsc 0 / eslint 0 / vitest 347 / playwright 72 / build 0

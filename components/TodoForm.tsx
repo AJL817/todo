@@ -117,7 +117,7 @@ export function TodoForm({ onCreate, plans = [], defaultPlanId = null, pending =
       {planId !== '' && (
         <section
           data-testid="linked-plan-preview"
-          className="card bg-surface-soft p-4"
+          className="well p-5"
         >
           {selectedPlan.isPending ? (
             <p className="text-xs text-muted">연결할 계획을 불러오는 중…</p>

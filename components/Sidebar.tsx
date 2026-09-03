@@ -62,10 +62,10 @@ export function Sidebar() {
             href={item.href}
             data-testid={item.testId}
             aria-current={active ? 'page' : undefined}
-            className={`flex shrink-0 items-center justify-between gap-2 whitespace-nowrap rounded-control px-3.5 py-2.5 text-[15px] transition-colors ${
+            className={`flex shrink-0 items-center justify-between gap-2 whitespace-nowrap rounded-control border-l-2 px-3.5 py-2.5 text-[15px] transition-colors ${
               active
-                ? 'bg-primary-soft font-semibold text-primary-accent'
-                : 'text-body hover:bg-surface-soft hover:text-ink'
+                ? 'border-primary bg-primary-soft font-semibold text-ink'
+                : 'border-transparent text-body hover:bg-surface-soft hover:text-ink'
             }`}
           >
             {item.label}

@@ -36,8 +36,15 @@ export default defineConfig({
       reuseExistingServer: !process.env.CI,
       timeout: 180_000,
       env: {
-        // E2E 는 개발 데이터와 분리된 데이터베이스를 쓴다.
-        // MONGODB_URI 는 일부러 비워 두어 lib/mongo-uri.ts 의 로컬 폴백을 그대로 태운다.
+        // E2E 는 개발 데이터와 분리된 로컬 데이터베이스를 쓴다.
+        //
+        // MONGODB_URI 를 빈 문자열로 "명시" 해야 한다. 주석으로 비워 뒀다고 적어 두는
+        // 것으로는 부족하다 — next dev 가 .env 를 읽으므로, 개발용 .env 에
+        // MONGODB_URI 가 있으면 그 값이 그대로 쓰인다. 실제로 그렇게 해서 E2E 가
+        // 원격 Atlas 운영 DB 에 붙어 돌았고, 매 요청이 네트워크를 타면서
+        // 테스트마다 옮겨 다니는 간헐 타임아웃으로 나타났다.
+        // process.env 가 .env 파일보다 우선하므로 여기서 비우면 로컬 폴백을 탄다.
+        MONGODB_URI: '',
         MONGO_DB_NAME: 'todo-e2e',
         NODE_ENV: 'development',
         // 스텁을 GitHub 대신 쓰게 한다. 값은 형식만 맞으면 되고 실제 비밀이 아니다.

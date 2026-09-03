@@ -101,11 +101,45 @@ async function centerInViewport(locator: Locator): Promise<void> {
   await locator.evaluate((element) => element.scrollIntoView({ block: 'center', inline: 'nearest' }))
 }
 
+/**
+ * 포인터로 실제 드래그를 수행한다.
+ *
+ * dnd-kit 은 pointerdown -> (임계 초과) 이동 -> 충돌 판정 -> pointerup 을
+ * 각각 다른 프레임에서 처리한다. 이벤트를 붙여서 쏘면 활성화 전에 이동이,
+ * 충돌 판정 전에 놓기가 도착해 드롭이 통째로 무시된다. 화면은 멀쩡해 보이고
+ * 요청만 안 나가서, 진행률이 그대로인 형태로만 드러난다.
+ *
+ * 단계마다 한 프레임씩 양보하는 이유가 그것이다.
+ */
+async function pointerDrag(
+  page: Page,
+  start: { x: number; y: number },
+  end: { x: number; y: number },
+): Promise<void> {
+  await page.mouse.down()
+  await page.waitForTimeout(60)
+
+  // 활성화 임계(5px)를 넘긴다
+  await page.mouse.move(start.x + 12, start.y + 12, { steps: 4 })
+  await page.waitForTimeout(60)
+
+  await page.mouse.move(end.x, end.y, { steps: 12 })
+  // 같은 지점에서 한 번 더 움직여 충돌 판정이 최종 위치를 보게 한다
+  await page.mouse.move(end.x, end.y, { steps: 2 })
+  await page.waitForTimeout(120)
+
+  await page.mouse.up()
+}
+
 export async function dragTo(page: Page, source: Locator, target: Locator): Promise<void> {
   // page.mouse 는 좌표를 뷰포트 기준으로 해석하지만 boundingBox 는 문서 기준이다.
   // 화면 밖 요소를 그대로 끌면 엉뚱한 위치에 이벤트가 떨어져 드래그가 아예 시작되지 않는다.
   await centerInViewport(target)
   await centerInViewport(source)
+
+  // 좌표를 읽고 나서 누르기 전에 페이지가 다시 렌더되면 엉뚱한 자리를 집는다.
+  // hover() 는 요소가 안정될 때까지 기다렸다가 포인터를 올려 주므로 그 창이 사라진다.
+  await source.hover()
 
   const from = await source.boundingBox()
   // 목적지 좌표는 드래그 시작 전에 읽는다. 드래그 중에는 sortable 이 항목을 밀어내므로
@@ -115,25 +149,35 @@ export async function dragTo(page: Page, source: Locator, target: Locator): Prom
 
   const viewport = page.viewportSize()
   if (viewport && (from.y < 0 || from.y + from.height > viewport.height)) {
-    throw new Error(`출발점이 뷰포트 밖입니다 (y=${from.y}). 스크롤 후에도 보이지 않습니다.`)
+    throw new Error(`출발점이 뷰포트 밖입니다 (y=${Math.round(from.y)}). 스크롤 후에도 보이지 않습니다.`)
   }
 
-  const start = { x: from.x + from.width / 2, y: from.y + from.height / 2 }
-  const end = { x: to.x + to.width / 2, y: to.y + to.height / 2 }
+  let start = { x: from.x + from.width / 2, y: from.y + from.height / 2 }
+  let end = { x: to.x + to.width / 2, y: to.y + to.height / 2 }
+
+  // 출발점을 화면 가운데로 올리면 목적지가 밖으로 밀려날 수 있다. 섹션 여백이
+  // 넓어질 때마다 조용히 깨지는 자리라, 화면 안으로 끌어오고 그래도 안 되면
+  // 무엇이 밖에 있는지 말하고 실패한다.
+  if (viewport) {
+    const overflow = end.y < 0 ? end.y - 8 : end.y > viewport.height ? end.y - viewport.height + 8 : 0
+
+    if (overflow !== 0) {
+      await page.evaluate((dy) => window.scrollBy(0, dy), overflow)
+      const [from2, to2] = await Promise.all([source.boundingBox(), target.boundingBox()])
+      if (!from2 || !to2) throw new Error('스크롤 후 드래그 대상의 위치를 찾지 못했습니다')
+      start = { x: from2.x + from2.width / 2, y: from2.y + from2.height / 2 }
+      end = { x: to2.x + to2.width / 2, y: to2.y + to2.height / 2 }
+    }
+
+    for (const [name, point] of [['출발점', start], ['목적지', end]] as const) {
+      if (point.y < 0 || point.y > viewport.height) {
+        throw new Error(`${name}이 뷰포트 밖입니다 (y=${Math.round(point.y)}). 스크롤해도 보이지 않습니다.`)
+      }
+    }
+  }
 
   await page.mouse.move(start.x, start.y)
-  await page.mouse.down()
-
-  // 활성화 임계(5px)를 넘긴 뒤 여러 단계로 나눠 이동한다.
-  await page.mouse.move(start.x + 12, start.y + 12, { steps: 4 })
-  await page.mouse.move(end.x, end.y, { steps: 12 })
-  // 같은 지점에서 한 번 더 움직여 충돌 판정이 최종 위치를 보게 한다.
-  await page.mouse.move(end.x, end.y, { steps: 2 })
-  // dnd-kit 은 이동을 rAF 로 처리한다. 곧바로 놓으면 마지막 위치가 반영되기 전에
-  // 드롭이 끝나 항목이 제자리로 돌아간다.
-  await page.waitForTimeout(80)
-
-  await page.mouse.up()
+  await pointerDrag(page, start, end)
 }
 
 /**
@@ -175,6 +219,10 @@ export async function dragCard(page: Page, title: string, target: Locator): Prom
   // 카드를 그대로 끌면 드래그 도중 페이지가 스크롤되어 절대 좌표가 통째로 어긋난다.
   // 조작 대상을 화면 한가운데로 올려 자동 스크롤 영역을 피한다.
   await centerInViewport(body)
+
+  // 좌표를 읽고 나서 누르기 전에 페이지가 다시 렌더되면 엉뚱한 자리를 집는다.
+  // hover() 는 요소가 안정될 때까지 기다렸다가 포인터를 올려 주므로 그 창이 사라진다.
+  await source.hover()
 
   const [handleBox, cardBox, targetBox] = await Promise.all([
     source.boundingBox(),
@@ -223,12 +271,7 @@ export async function dragCard(page: Page, title: string, target: Locator): Prom
   }
 
   await page.mouse.move(start.x, start.y)
-  await page.mouse.down()
-  await page.mouse.move(start.x + 12, start.y + 12, { steps: 4 })
-  await page.mouse.move(end.x, end.y, { steps: 12 })
-  await page.mouse.move(end.x, end.y, { steps: 2 })
-  await page.waitForTimeout(80)
-  await page.mouse.up()
+  await pointerDrag(page, start, end)
 }
 
 /**

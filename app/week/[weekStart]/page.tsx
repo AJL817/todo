@@ -53,8 +53,8 @@ export default function WeekPage({ params }: { params: Promise<{ weekStart: stri
   const carryOverPlan = plans.find((plan) => plan.id === carryOverPlanId) ?? null
 
   return (
-    <div className="flex flex-col gap-16">
-      <header className="flex flex-col gap-3">
+    <div className="flex flex-col gap-12">
+      <header className="flex flex-col gap-3 mb-4">
         <h1 className="t-display text-ink">주간 뷰</h1>
         <WeekNavigator weekStart={weekStart} />
         <p className="t-body text-muted">
@@ -98,7 +98,7 @@ export default function WeekPage({ params }: { params: Promise<{ weekStart: stri
             이 주에는 계획이 없습니다.
           </p>
         ) : (
-          <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3" data-testid="plan-list">
+          <div className="grid items-start gap-4 md:grid-cols-2 lg:grid-cols-3" data-testid="plan-list">
             {plans.map((plan) => (
               <WeeklyPlanCard
                 key={plan.id}
@@ -143,7 +143,7 @@ export default function WeekPage({ params }: { params: Promise<{ weekStart: stri
       {carriedOut.length > 0 && (
         <section
           data-testid="carried-out-section"
-          className="card flex flex-col gap-4 p-6"
+          className="flex flex-col gap-4"
         >
           <header className="flex items-baseline gap-2">
             <h2 className="t-section text-ink">이 주에서 이월돼 나간 할일</h2>
@@ -164,7 +164,7 @@ export default function WeekPage({ params }: { params: Promise<{ weekStart: stri
                 className="inline-flex items-center gap-1.5 rounded-full border border-hairline px-3.5 py-1.5 text-sm text-muted"
               >
                 {todo.title}
-                <span className="badge badge-neutral">
+                <span className="badge badge-luxe">
                   이월됨
                 </span>
               </li>

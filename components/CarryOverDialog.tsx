@@ -56,7 +56,7 @@ export function CarryOverDialog({
       aria-label={`${plan.title} 이월`}
       className="fixed inset-0 z-40 flex items-center justify-center bg-black/50 p-4"
     >
-      <div className="card flex max-h-[80vh] w-full max-w-md flex-col gap-5 overflow-auto bg-surface p-6 shadow-float">
+      <div className="card-liftable flex max-h-[80vh] w-full max-w-md flex-col gap-5 overflow-auto p-6 shadow-float">
         <header className="flex flex-col gap-1">
           <h2 className="text-lg font-semibold tracking-tight text-ink">다음 주로 이월</h2>
           <p className="text-xs leading-relaxed text-body">

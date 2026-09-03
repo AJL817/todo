@@ -56,8 +56,8 @@ export default function GoalsPage() {
   }
 
   return (
-    <div className="flex flex-col gap-16">
-      <header className="flex flex-col gap-1.5">
+    <div className="flex flex-col gap-12">
+      <header className="flex flex-col gap-1.5 mb-4">
         <h1 className="t-display text-ink">1년 목표</h1>
         <p className="t-body text-muted">
           진행률은 <strong>경과한 주</strong>만 세어 평균 냅니다. 미래 주를 미리 만들어 둬도 오늘의 성과가 깎이지 않습니다.
@@ -112,7 +112,7 @@ export default function GoalsPage() {
           아직 1년 목표가 없습니다.
         </p>
       ) : (
-        <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3" data-testid="goal-list">
+        <div className="grid items-start gap-4 md:grid-cols-2 lg:grid-cols-3" data-testid="goal-list">
           {goals.map((entry) => (
             <GoalCard
               key={entry.goal.id}
@@ -126,7 +126,7 @@ export default function GoalsPage() {
 
       <section
         data-testid="orphan-plans"
-        className="card flex flex-col gap-4 p-6"
+        className="flex flex-col gap-4"
       >
         <header className="flex items-baseline gap-2">
           <h2 className="t-section text-ink">미분류 주간 계획</h2>

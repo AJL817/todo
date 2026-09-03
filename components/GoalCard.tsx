@@ -23,7 +23,7 @@ export function GoalCard({ goal, progress, onDelete }: GoalCardProps) {
     <article
       data-testid={`goal-${goal.id}`}
       data-title={goal.title}
-      className="card flex flex-col gap-4 p-6"
+      className="card-liftable flex flex-col gap-4 p-5"
     >
       <header className="flex items-start justify-between gap-2">
         <div className="flex flex-col">
